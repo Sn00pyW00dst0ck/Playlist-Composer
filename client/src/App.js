@@ -20,7 +20,7 @@ function App() {
     </div>
   );
 
-
+  /*  Default App Creation
   return (
     <div className="App">
       <header className="App-header">
@@ -40,6 +40,7 @@ function App() {
     </div>
     
   );
+  */
 }
 
 export default App;
