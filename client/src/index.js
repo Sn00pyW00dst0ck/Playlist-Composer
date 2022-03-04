@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 
 ReactDOM.render(
   <React.StrictMode>
-    <button>Click Me</button>
+    <a href="http://localhost:3001/login">Click Me</a>
     <App />
     <App />
     <App />
