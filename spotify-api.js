@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from 'express'
-require('dotent').config();
+const { contentType } = require('express/lib/response');
+
+const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 /**
  * A class written by Gabriel Aldous which handles all interaction with the SPOTIFY-WEB-API.
@@ -20,25 +21,32 @@ class SpotifyAPI  {
     };
 
     /**
-     * 
+     * WORK IN PROGRESS METHOD!! 
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call generating 
      *          a new access_token, refresh_token, and expires_in
      */
-    generateAccessToken = async () =>  {
+    generateAccessToken = async (code, redirect_uri) =>  {
         const response = await fetch("https://accounts.spotify.com/api/token", {
-            method: "post",
+            method: 'POST',
+            url: "https://accounts.spotify.com/api/token",
             form: {
                 code: code,
                 redirect_uri: redirect_uri,
-                grant_type: 'authorization_code'
+                grant_type: "authorization_code"
             },
             headers: {
-                "Authorization": 'Basic ' + btoa(client_id + ":" + client_secret)
+                "Authorization": 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
             },
             json: true
         });
+        console.log("RES: ");
+        console.log(response);
+        console.log(response.status);
+        console.log(response.body);
+
+        const data = await response.text();
+        console.log(data);
         
-        const data = await response.json();
         return data.body;
     }
 
@@ -65,7 +73,7 @@ class SpotifyAPI  {
     }
 
     /**
-     * 
+     * Get the logged in user's data (display_name, followers, id, ect.)
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
      *          getting public user profile data
      */
@@ -73,13 +81,14 @@ class SpotifyAPI  {
         const response = await fetch("https://api.spotify.com/v1/me", {
             method: "get",
             headers: {
-                'Authorization': 'Bearer ' + this.access_token
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
             },
             json: true
         });
-
+        
         const data = await response.json();
-        return data.body;
+        return data;
     }
 
     /**
@@ -99,9 +108,27 @@ class SpotifyAPI  {
         });
 
         const data = await response.json();
-        return data.body;
+        return data;
     }
 
+    /**
+     * 
+     * @param {string} user_id The user's Spotify user ID.
+     * @returns 
+     */
+    getUserInformation = async (user_id) =>  {
+        const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
+            method: "get",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
+    }
 
     /**
      * 
@@ -121,16 +148,16 @@ class SpotifyAPI  {
         });
 
         const data = await response.json();
-        return data.body;
+        return data;
     }
 
     /**
      * 
      * @param {string} playlist_id 
-     * @returns 
+     * @returns Spotify JSON response with the tracks found in the specified playlist
      */
     getPlaylistItems = async (playlist_id) =>  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/playlist_id/tracks", {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
             method: "get",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
@@ -140,10 +167,8 @@ class SpotifyAPI  {
         });
 
         const data = await response.json();
-        return data.body;
+        return data;
     }
-
-
 
 }
 

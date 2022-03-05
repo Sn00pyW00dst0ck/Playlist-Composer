@@ -4,6 +4,8 @@ const queryString = require('querystring');
 const path = require('path');
 const request = require('request');
 const { URLSearchParams } = require('url');
+const SpotifyAPI = require('./spotify-api');
+
 require('dotenv').config();
 
 const PORT = process.env.PORT || 3001;
@@ -27,6 +29,9 @@ const REDIRECT_URI = "http://localhost:3001/login/callback";
 
 let spotify_auth_uri = "https://accounts.spotify.com/authorize?";
 
+//An object to be used for easy spotify api calls
+let SpotifyAPIObject = new SpotifyAPI(CLIENT_ID, CLIENT_SECRET);
+
 APP.get("/login", (req, res) =>  {
     //This code will be replaced with spotify-api object later. This is for testing...
     let params = new URLSearchParams();
@@ -42,6 +47,10 @@ APP.get("/login/callback", async (req, res) =>  {
     let code = req.query.code || null;
     let state = req.query.state || null;
     
+    //await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
+    //console.log("ID: " + SpotifyAPIObject.client_id);
+    //console.log("OBJECT: " + SpotifyAPIObject.access_token);
+    
     let authOptions = {
         url: 'https://accounts.spotify.com/api/token',
         form: {
@@ -54,24 +63,29 @@ APP.get("/login/callback", async (req, res) =>  {
         },
         json: true
     };
-    request.post(authOptions, function(error, response, body)  {
+    request.post(authOptions, async function(error, response, body)  {
         if (error || response.statusCode != 200)  {
             res.redirect("/#Invalid_Token");
         } else  {
             var access_token = body.access_token,
                 refresh_token = body.refresh_token;
 
-            var options = {
-                url: 'https://api.spotify.com/v1/me',
-                headers: { 'Authorization': 'Bearer ' + access_token },
-                json: true
-            };
-            request.get(options, function(error, response, body)  {
-                console.log(body);
-            });
+            //Give our object the proper tokens
+            SpotifyAPIObject.access_token = access_token;
+            SpotifyAPIObject.refresh_token = refresh_token;
+
+            //Let's make some spotify requests!
+            let user = await SpotifyAPIObject.getCurrentUserData();
+            let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
+            let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[0].id);
+            for (let i = 0; i < tracks.items.length; i++)  {
+                console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
+            }
+
             res.redirect("http://localhost/3000/LoggedIn");
         }
     });
+    
 
     /*
     Sample Fetch Code
