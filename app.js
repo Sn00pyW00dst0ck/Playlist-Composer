@@ -47,6 +47,7 @@ APP.get("/login/callback", async (req, res) =>  {
     let code = req.query.code || null;
     let state = req.query.state || null;
     
+    //Lets make some requests using the Spotify API object
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
     let user = await SpotifyAPIObject.getCurrentUserData();
     let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
@@ -54,6 +55,8 @@ APP.get("/login/callback", async (req, res) =>  {
     for (let i = 0; i < tracks.items.length; i++)  {
         console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
     }
+
+    //Redirect the user to the next webpage
     res.redirect("http://localhost/3000/LoggedIn");
 });
 
