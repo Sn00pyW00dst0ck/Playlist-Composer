@@ -27,33 +27,32 @@ class SpotifyAPI  {
     };
 
     /**
-     * WORK IN PROGRESS METHOD!! 
-     * @returns a JSON object with the body of the SPOTIFY-WEB-API call generating 
-     *          a new access_token, refresh_token, and expires_in
+     * Generates an access_token & refresh_token given a access code and redirect url
      */
     generateAccessToken = async (code, redirect_uri) =>  {
+        //Add the form parameters for the Spotify OAuth token...
+        const params = new URLSearchParams();
+        params.append("code", code);
+        params.append("redirect_uri", redirect_uri);
+        params.append("grant_type", "authorization_code");
+
+        //Send the request to Spotify
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: 'POST',
             url: "https://accounts.spotify.com/api/token",
-            form: {
-                code: code,
-                redirect_uri: redirect_uri,
-                grant_type: "authorization_code"
-            },
             headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
                 "Authorization": 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
             },
-            json: true
+            json: true, 
+            body: params
         });
-        console.log("RES: ");
-        console.log(response);
-        console.log(response.status);
-        console.log(response.body);
+        const data = await response.json();
 
-        const data = await response.text();
-        console.log(data);
-        
-        return data.body;
+        //Set the access_token, refresh_token, and expires in
+        this.access_token = data.access_token;
+        this.refresh_token = data.refresh_token;
+        this.expires_in = data.expires_in;
     }
 
     /**
@@ -120,7 +119,8 @@ class SpotifyAPI  {
     /**
      * Get the public information of a given spotify user
      * @param {string} user_id The user's Spotify user ID.
-     * @returns 
+     * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
+     *          getting public user profile data
      */
     getUserInformation = async (user_id) =>  {
         const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
@@ -158,8 +158,8 @@ class SpotifyAPI  {
     }
 
     /**
-     * 
-     * @param {string} playlist_id 
+     * Get a JSON object from Spotify with information about a playlist's items (tracks).
+     * @param {string} playlist_id the playlist's Spotify ID.
      * @returns Spotify JSON response with the tracks found in the specified playlist
      */
     getPlaylistItems = async (playlist_id) =>  {

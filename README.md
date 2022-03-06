@@ -29,3 +29,4 @@ To set up the development environment on your computer, ensure that Node.js is i
 4. Create React UI & webpage for confirmation of playlist creation
 5. Create React UI for landing page
 6. Finalize SpotifyAPI JavaScript object for easy function calls
+7. Create data structure and algorithms for assigning track priorities by frequency and other factors
