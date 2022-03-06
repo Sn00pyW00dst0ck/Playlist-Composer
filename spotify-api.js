@@ -5,6 +5,12 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 /**
  * A class written by Gabriel Aldous which handles all interaction with the SPOTIFY-WEB-API.
  * This is a work in progress. Much of this code is untested and should not be used yet...
+ * TO DO:
+ *      1) FIX AUTHENTICATION METHODS
+ *      2) AUTOMATIC REFRESH TOKEN
+ *      3) TEST GET INFORMATION FUNCTIONS
+ *      4) WRITE AND TEST PLAYLIST CREATION / EDIT FUNCTIONS
+ *      5) SEARCH FUNCTIONS
  */
 class SpotifyAPI  {
     /**
@@ -51,7 +57,7 @@ class SpotifyAPI  {
     }
 
     /**
-     * 
+     * WORK IN PROGRESS METHOD
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call generating 
      *          a new access_token, and expires_in given the refresh token
      */
@@ -112,7 +118,7 @@ class SpotifyAPI  {
     }
 
     /**
-     * 
+     * Get the public information of a given spotify user
      * @param {string} user_id The user's Spotify user ID.
      * @returns 
      */
@@ -135,7 +141,7 @@ class SpotifyAPI  {
      * @param {string} user_id The user's Spotify user ID.
      * @param {int} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
      * @param {int} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.'
-     * @returns 
+     * @returns Spotify JSON response with the playists found for the specified user
      */
     getUserPlaylists = async (user_id, limit, offset) =>  {
         const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
