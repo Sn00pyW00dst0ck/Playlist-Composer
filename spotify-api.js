@@ -26,6 +26,10 @@ class SpotifyAPI  {
         this.expires_in = null;
     };
 
+/*--------------------------------------------------------------------------------
+    OAuth2 Authentication Methods
+--------------------------------------------------------------------------------*/
+
     /**
      * Generates an access_token & refresh_token given a access code and redirect url
      */
@@ -62,7 +66,7 @@ class SpotifyAPI  {
      */
     refreshAccessToken = async () =>  {
         const response = await fetch("https://accounts.spotify.com/api/token", {
-            method: "post",
+            method: "POST",
             headers:  {
                 'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) 
             },
@@ -77,14 +81,18 @@ class SpotifyAPI  {
         return data.body;
     }
 
+/*--------------------------------------------------------------------------------
+    Users Methods
+--------------------------------------------------------------------------------*/
+
     /**
      * Get the logged in user's data (display_name, followers, id, ect.)
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
      *          getting public user profile data
      */
-    getCurrentUserData = async () =>  {
+    getCurrentUserProfile = async () =>  {
         const response = await fetch("https://api.spotify.com/v1/me", {
-            method: "get",
+            method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
@@ -96,15 +104,78 @@ class SpotifyAPI  {
         return data;
     }
 
+    getCurrentUserTopItems = async () =>  {
+
+    }
+
     /**
-     * 
-     * @param {int} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
-     * @param {int} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.'
-     * @returns 
+     * Get the public information of a given spotify user
+     * @param {string} user_id The user's Spotify user ID.
+     * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
+     *          getting public user profile data
      */
-    getCurrentUserPlaylists = async (limit, offset) =>  {
-        const response = await fetch("https://api.spotify.com/v1/me/playlists", {
-            method: "get",
+     getUserProfile = async (user_id) =>  {
+        const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    followPlaylist = async () =>  {
+
+    }
+
+    unfollowPlaylist = async () =>  {
+
+    }
+
+    getFollowedArtists = async () =>  {
+
+    }
+
+    followArtistsOrUsers = async () =>  {
+
+    }
+
+    unfollowArtistsOrUsers = async () =>  {
+
+    }
+
+    checkUserFollowsArtistsOrUsers = async () =>  {
+
+    }
+
+    checkUsersFollowsPlaylist = async () =>  {
+
+    }
+
+/*--------------------------------------------------------------------------------
+    Playlist Methods
+--------------------------------------------------------------------------------*/
+
+    getPlaylist = async () =>  {
+
+    }
+
+    changePlaylistDetails = async () =>  {
+
+    }
+
+    /**
+     * Get a JSON object from Spotify with information about a playlist's items (tracks).
+     * @param {string} playlist_id the playlist's Spotify ID.
+     * @returns Spotify JSON response with the tracks found in the specified playlist
+     */
+     getPlaylistItems = async (playlist_id) =>  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
+            method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
@@ -117,14 +188,45 @@ class SpotifyAPI  {
     }
 
     /**
-     * Get the public information of a given spotify user
-     * @param {string} user_id The user's Spotify user ID.
-     * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
-     *          getting public user profile data
+     * 
+     * @param {string} playlist_id the playlist's Spotify ID. 
+     * @param {Array<string>} uris array of spotify track uris to add to the playlist (cannot exceed 100 track uris)
+     * @returns 
      */
-    getUserInformation = async (user_id) =>  {
-        const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
-            method: "get",
+     addItemsToPlaylist = async (playlist_id, uris) =>  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
+            method: "POST",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: {
+                "uris" : uris
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    updatePlaylistItems = async () =>  {
+
+    }
+
+    removePlaylistItems = async () =>  {
+
+    }
+
+    /**
+     * 
+     * @param {int} limit The maximum number of items to return. Default: 20. Minimum: 1. Maximum: 50.
+     * @param {int} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.'
+     * @returns 
+     */
+    getCurrentUserPlaylists = async (limit, offset) =>  {
+        const response = await fetch("https://api.spotify.com/v1/me/playlists", {
+            method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
@@ -145,7 +247,7 @@ class SpotifyAPI  {
      */
     getUserPlaylists = async (user_id, limit, offset) =>  {
         const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
-            method: "get",
+            method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
@@ -158,13 +260,103 @@ class SpotifyAPI  {
     }
 
     /**
-     * Get a JSON object from Spotify with information about a playlist's items (tracks).
-     * @param {string} playlist_id the playlist's Spotify ID.
-     * @returns Spotify JSON response with the tracks found in the specified playlist
+     * 
+     * @param {string} user_id The user's Spotify user ID.
+     * @param {string} name The name for the new playlist
+     * @param {boolean} public Whether the new playlist should be public or not
+     * @param {boolean} collaborative Whether the new playlist should be collaborative or not ('public' must be false if this is true)
+     * @param {string} description The description for the new playlist
+     * @returns 
      */
-    getPlaylistItems = async (playlist_id) =>  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
-            method: "get",
+    createPlaylist = async (user_id, name, public, collaborative, description) =>  {
+        const response = await fetch("https://api.spotify.com/v1/user/" + user_id + "/playlists", {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: {
+                "name" : name,
+                "public" : public,
+                "collaborative" : collaborative,
+                "description" : description
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    getFeaturedPLaylists = async () =>  {
+
+    }
+
+    getCategorysPlaylists = async () =>  {
+
+    }
+
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @returns a set of images
+     */
+    getPlaylistCoverImage = async (playlist_id) =>  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    addCustomPlaylistCoverImage = async () =>  {
+
+    }
+
+/*--------------------------------------------------------------------------------
+    Categories Methods
+--------------------------------------------------------------------------------*/
+
+    getSeveralBrowseCategories = async () =>  {
+        
+    }
+
+    /**
+     * 
+     * @param {string} category_id 
+     * @returns 
+     */
+    getSingleBrowseCategory = async (category_id) =>  {
+        const response = await fetch("https://api.spotify.com/v1/categories/" + category_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+/*--------------------------------------------------------------------------------
+    Markets Methods
+--------------------------------------------------------------------------------*/
+
+    /**
+     * Get the list of markets where Spotify is available 
+     * @returns A markets object with an array of country codes
+     */
+    getAvailableMarkets = async () =>  {
+        const response = await fetch("https://api.spotify.com/v1/markets", {
+            method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
