@@ -49,12 +49,14 @@ APP.get("/login/callback", async (req, res) =>  {
     
     //Lets make some requests using the Spotify API object
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
-    let user = await SpotifyAPIObject.getCurrentUserData();
+    let user = await SpotifyAPIObject.getCurrentUserProfile();
     let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
     let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[1].id);
     for (let i = 0; i < tracks.items.length; i++)  {
         console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
     }
+
+    let awesome = await SpotifyAPIObject
 
     //Redirect the user to the next webpage
     res.redirect("http://localhost/3000/LoggedIn");

@@ -7,6 +7,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  * This is a work in progress. Much of this code is untested and should not be used yet...
  * TO DO:
  *      1) FIX AUTHENTICATION METHODS
+ *      **) ERROR HANDLING!!!!!
  *      2) AUTOMATIC REFRESH TOKEN
  *      3) TEST GET INFORMATION FUNCTIONS
  *      4) WRITE AND TEST PLAYLIST CREATION / EDIT FUNCTIONS
@@ -33,7 +34,7 @@ class SpotifyAPI  {
     /**
      * Generates an access_token & refresh_token given a access code and redirect url
      */
-    generateAccessToken = async (code, redirect_uri) =>  {
+    async generateAccessToken(code, redirect_uri)  {
         //Add the form parameters for the Spotify OAuth token...
         const params = new URLSearchParams();
         params.append("code", code);
@@ -90,7 +91,7 @@ class SpotifyAPI  {
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
      *          getting public user profile data
      */
-    getCurrentUserProfile = async () =>  {
+    async getCurrentUserProfile()  {
         const response = await fetch("https://api.spotify.com/v1/me", {
             method: "GET",
             headers: {
@@ -104,17 +105,34 @@ class SpotifyAPI  {
         return data;
     }
 
-    getCurrentUserTopItems = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} type valid values : "tracks", "artists"
+     * @returns JSON object with Spotify API call response
+     */
+    async getCurrentUserTopItems(type)  {
+        const response = await fetch("https://api.spotify.com/v1/me/top/" + type, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
 
+        const data = await response.json();
+        return data;
     }
 
+    //NEEDS TESTING
     /**
      * Get the public information of a given spotify user
      * @param {string} user_id The user's Spotify user ID.
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call for 
      *          getting public user profile data
      */
-     getUserProfile = async (user_id) =>  {
+    async getUserProfile(user_id)  {
         const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
             method: "GET",
             headers: {
@@ -128,43 +146,162 @@ class SpotifyAPI  {
         return data;
     }
 
-    followPlaylist = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @param {boolean} public boolean for if following playlist should be public profile information
+     * @returns 
+     */
+    async followPlaylist(playlist_id, _public)  {
+        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", {
+            method : "PUT",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true,
+            body : {
+                public : _public
+            }
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @returns 
+     */
+    async unfollowPlaylist()  {
+        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", {
+            method : "DELETE",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS WRITING AND TESTING
+    /**
+     * 
+     */
+    async getFollowedArtists()  {
 
     }
 
-    unfollowPlaylist = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} ids 
+     * @param {string} type 
+     * @returns 
+     */
+    async followArtistsOrUsers(ids, type)  {
+        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, {
+            method : "PUT",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true, 
+            body : {
+                ids : ids
+            }
+        });
 
+        const data = await response.json();
+        return data;
     }
 
-    getFollowedArtists = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} ids 
+     * @param {string} type 
+     * @returns 
+     */
+    async unfollowArtistsOrUsers(ids, type)  {
+        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, {
+            method : "DELETE",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true, 
+            body : {
+                ids : ids
+            }
+        });
 
+        const data = await response.json();
+        return data;
     }
 
-    followArtistsOrUsers = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} ids 
+     * @param {string} type 
+     * @returns 
+     */
+    async checkUserFollowsArtistsOrUsers(ids, type)  {
+        const response = await fetch("https://api.spotify.com/v1/me/following/contains?type=" + type, {
+            method : "GET",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true, 
+            body : {
+                ids : ids
+            }
+        });
 
+        const data = await response.json();
+        return data;
     }
 
-    unfollowArtistsOrUsers = async () =>  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @param {Array<string>} ids 
+     * @returns 
+     */
+    async checkUsersFollowsPlaylist(playlist_id, ids)  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/followers/contains", {
+            method : "GET",
+            headers : {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json : true, 
+            body : {
+                ids : ids
+            }
+        });
 
-    }
-
-    checkUserFollowsArtistsOrUsers = async () =>  {
-
-    }
-
-    checkUsersFollowsPlaylist = async () =>  {
-
+        const data = await response.json();
+        return data;
     }
 
 /*--------------------------------------------------------------------------------
     Playlist Methods
 --------------------------------------------------------------------------------*/
 
-    getPlaylist = async () =>  {
+    async getPlaylist()  {
 
     }
 
-    changePlaylistDetails = async () =>  {
+    async changePlaylistDetails()  {
 
     }
 
@@ -173,7 +310,7 @@ class SpotifyAPI  {
      * @param {string} playlist_id the playlist's Spotify ID.
      * @returns Spotify JSON response with the tracks found in the specified playlist
      */
-     getPlaylistItems = async (playlist_id) =>  {
+    async getPlaylistItems(playlist_id)  {
         const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
             method: "GET",
             headers: {
@@ -187,13 +324,14 @@ class SpotifyAPI  {
         return data;
     }
 
+    //NEEDS TESTING
     /**
      * 
      * @param {string} playlist_id the playlist's Spotify ID. 
      * @param {Array<string>} uris array of spotify track uris to add to the playlist (cannot exceed 100 track uris)
      * @returns 
      */
-     addItemsToPlaylist = async (playlist_id, uris) =>  {
+    async addItemsToPlaylist(playlist_id, uris)  {
         const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
             method: "POST",
             headers: {
@@ -210,11 +348,11 @@ class SpotifyAPI  {
         return data;
     }
 
-    updatePlaylistItems = async () =>  {
+    async updatePlaylistItems()  {
 
     }
 
-    removePlaylistItems = async () =>  {
+    async removePlaylistItems()  {
 
     }
 
@@ -224,7 +362,7 @@ class SpotifyAPI  {
      * @param {int} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.'
      * @returns 
      */
-    getCurrentUserPlaylists = async (limit, offset) =>  {
+    async getCurrentUserPlaylists(limit, offset)  {
         const response = await fetch("https://api.spotify.com/v1/me/playlists", {
             method: "GET",
             headers: {
@@ -238,6 +376,7 @@ class SpotifyAPI  {
         return data;
     }
 
+    //NEEDS TESTING
     /**
      * 
      * @param {string} user_id The user's Spotify user ID.
@@ -245,7 +384,7 @@ class SpotifyAPI  {
      * @param {int} offset The index of the first playlist to return. Default: 0 (the first object). Maximum offset: 100.000. Use with limit to get the next set of playlists.'
      * @returns Spotify JSON response with the playists found for the specified user
      */
-    getUserPlaylists = async (user_id, limit, offset) =>  {
+    async getUserPlaylists(user_id, limit, offset)  {
         const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
             method: "GET",
             headers: {
@@ -259,6 +398,7 @@ class SpotifyAPI  {
         return data;
     }
 
+    //NEEDS TESTING
     /**
      * 
      * @param {string} user_id The user's Spotify user ID.
@@ -268,7 +408,7 @@ class SpotifyAPI  {
      * @param {string} description The description for the new playlist
      * @returns 
      */
-    createPlaylist = async (user_id, name, public, collaborative, description) =>  {
+    async createPlaylist(user_id, name, _public, collaborative, description)  {
         const response = await fetch("https://api.spotify.com/v1/user/" + user_id + "/playlists", {
             method: "PUT",
             headers: {
@@ -278,7 +418,7 @@ class SpotifyAPI  {
             json: true, 
             body: {
                 "name" : name,
-                "public" : public,
+                "public" : _public,
                 "collaborative" : collaborative,
                 "description" : description
             }
@@ -288,20 +428,21 @@ class SpotifyAPI  {
         return data;
     }
 
-    getFeaturedPLaylists = async () =>  {
+    async getFeaturedPLaylists()  {
 
     }
 
-    getCategorysPlaylists = async () =>  {
+    async getCategorysPlaylists()  {
 
     }
 
+    //NEEDS TESTING
     /**
      * 
      * @param {string} playlist_id 
      * @returns a set of images
      */
-    getPlaylistCoverImage = async (playlist_id) =>  {
+    async getPlaylistCoverImage(playlist_id)  {
         const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", {
             method: "GET",
             headers: {
@@ -315,7 +456,7 @@ class SpotifyAPI  {
         return data;
     }
 
-    addCustomPlaylistCoverImage = async () =>  {
+    async addCustomPlaylistCoverImage()  {
 
     }
 
@@ -323,16 +464,32 @@ class SpotifyAPI  {
     Categories Methods
 --------------------------------------------------------------------------------*/
 
-    getSeveralBrowseCategories = async () =>  {
-        
+    //NEEDS TESTING
+    /**
+     * 
+     * @returns 
+     */
+    async getSeveralBrowseCategories()  {
+        const response = await fetch("https://api.spotify.com/v1/categories", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
     }
 
+    //NEEDS TESTING
     /**
      * 
      * @param {string} category_id 
      * @returns 
      */
-    getSingleBrowseCategory = async (category_id) =>  {
+    async getSingleBrowseCategory(category_id)  {
         const response = await fetch("https://api.spotify.com/v1/categories/" + category_id, {
             method: "GET",
             headers: {
@@ -350,11 +507,12 @@ class SpotifyAPI  {
     Markets Methods
 --------------------------------------------------------------------------------*/
 
+    //NEEDS TESTING
     /**
      * Get the list of markets where Spotify is available 
      * @returns A markets object with an array of country codes
      */
-    getAvailableMarkets = async () =>  {
+    async getAvailableMarkets()  {
         const response = await fetch("https://api.spotify.com/v1/markets", {
             method: "GET",
             headers: {
@@ -370,4 +528,5 @@ class SpotifyAPI  {
 
 }
 
+//Export the SpotifyAPI class so Node.js require statements can get it
 module.exports = SpotifyAPI;
