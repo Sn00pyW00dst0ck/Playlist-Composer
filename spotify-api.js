@@ -8,6 +8,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  * TO DO:
  *      1) FIX AUTHENTICATION METHODS
  *      **) ERROR HANDLING!!!!!
+ *      ***) UPDATE REQUIRED APP SCOPES
  *      2) AUTOMATIC REFRESH TOKEN
  *      3) TEST GET INFORMATION FUNCTIONS
  *      4) WRITE AND TEST PLAYLIST CREATION / EDIT FUNCTIONS
@@ -105,7 +106,7 @@ class SpotifyAPI  {
         return data;
     }
 
-    //NEEDS TESTING
+    //NEEDS TESTING - UPDATE SCOPES
     /**
      * 
      * @param {string} type valid values : "tracks", "artists"
@@ -120,7 +121,8 @@ class SpotifyAPI  {
             },
             json: true
         });
-
+        console.log(response);
+        console.log(response.error.message);
         const data = await response.json();
         return data;
     }

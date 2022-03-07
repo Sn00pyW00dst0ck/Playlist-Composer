@@ -56,7 +56,13 @@ APP.get("/login/callback", async (req, res) =>  {
         console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
     }
 
-    let awesome = await SpotifyAPIObject
+    console.log();
+    console.log();
+
+    let artists = await SpotifyAPIObject.getCurrentUserTopItems("artists");
+    for (let i = 0; i < artists.items.length; i++)  {
+        console.log(artists.items[i].name);
+    }
 
     //Redirect the user to the next webpage
     res.redirect("http://localhost/3000/LoggedIn");
