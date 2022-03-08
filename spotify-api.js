@@ -53,6 +53,7 @@ class SpotifyAPI  {
             json: true, 
             body: params
         });
+
         const data = await response.json();
 
         //Set the access_token, refresh_token, and expires in
@@ -66,7 +67,7 @@ class SpotifyAPI  {
      * @returns a JSON object with the body of the SPOTIFY-WEB-API call generating 
      *          a new access_token, and expires_in given the refresh token
      */
-    refreshAccessToken = async () =>  {
+    async refreshAccessToken()  {
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
             headers:  {
@@ -106,14 +107,18 @@ class SpotifyAPI  {
         return data;
     }
 
-    //NEEDS TESTING - UPDATE SCOPES
     /**
      * 
      * @param {string} type valid values : "tracks", "artists"
      * @returns JSON object with Spotify API call response
      */
     async getCurrentUserTopItems(type)  {
-        const response = await fetch("https://api.spotify.com/v1/me/top/" + type, {
+        const params = new URLSearchParams();
+        params.append("limit", 20);
+        params.append("offset", 0);
+        params.append("time_range", "medium_term");
+
+        const response = await fetch("https://api.spotify.com/v1/me/top/" + type + "?" + params.toString(), {
             method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
@@ -121,13 +126,11 @@ class SpotifyAPI  {
             },
             json: true
         });
-        console.log(response);
-        console.log(response.error.message);
+
         const data = await response.json();
         return data;
     }
 
-    //NEEDS TESTING
     /**
      * Get the public information of a given spotify user
      * @param {string} user_id The user's Spotify user ID.
@@ -378,7 +381,6 @@ class SpotifyAPI  {
         return data;
     }
 
-    //NEEDS TESTING
     /**
      * 
      * @param {string} user_id The user's Spotify user ID.
