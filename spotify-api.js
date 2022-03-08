@@ -13,6 +13,8 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  *      3) TEST GET INFORMATION FUNCTIONS
  *      4) WRITE AND TEST PLAYLIST CREATION / EDIT FUNCTIONS
  *      5) SEARCH FUNCTIONS
+ * 
+ * STANDARDIZE ARGUMENTS BY MAKING PLURAL ARGS ARRAYS...
  */
 class SpotifyAPI  {
     /**
@@ -82,6 +84,234 @@ class SpotifyAPI  {
 
         const data = await response.json();
         return data.body;
+    }
+
+/*--------------------------------------------------------------------------------
+    Tracks Methods
+--------------------------------------------------------------------------------*/
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} track_id 
+     * @returns 
+     */
+    async getTrack(track_id)  {
+        const response = await fetch("https://api.spotify.com/v1/tracks/" + track_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} track_ids array of track ID strings to get. Maximum: 50 IDs
+     * @returns 
+     */
+    async getSeveralTracks(track_ids)  {
+        const params = new URLSearchParams();
+        params.append("ids", track_ids.join(","));
+
+        const response = await fetch("https://api.spotify.com/v1/tracks?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {int} limit 
+     * @param {int} offset 
+     * @returns 
+     */
+    async getUserSavedTracks(limit, offset)  {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        const response = await fetch("https://api.spotify.com/v1/me/tracks?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} track_ids an array of track IDs to save for the current user
+     * @returns 
+     */
+    async saveTracksForUser(track_ids)  {
+        const response = await fetch("https://api.spotify.com/v1/me/tracks", {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: track_ids
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} track_ids an array of track IDs to remove for the current user
+     * @returns 
+     */
+    async removeTracksForUser(track_ids)  {
+        const response = await fetch("https://api.spotify.com/v1/me/tracks", {
+            method: "DELETE",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true,
+            body: track_ids
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} track_ids an array of track IDs to get audio features for. Maximum 50 IDs
+     * @returns 
+     */
+    async checkUserSavedTracks(track_ids)  {
+        const params = new URLSearchParams();
+        params.append("ids", track_ids.join(",")); //Take track_ids array and make it comma separated string...
+
+        const response = await fetch("https://api.spotify.com/v1/me/tracks/contains?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} track_ids an array of track IDs to get audio features for. Maximum 100 IDs
+     * @returns 
+     */
+    async getTracksAudioFeatures(track_ids)  {
+        const params = new URLSearchParams();
+        params.append("ids", track_ids.join(",")); //Take track_ids array and make it comma separated string...
+
+        const response = await fetch("https://api.spotify.com/v1/audio-features?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} track_id 
+     * @returns 
+     */
+    async getTrackAudioFeatures(track_id)  {
+        const response = await fetch("https://api.spotify.com/v1/audio-features/" + track_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} track_id the spotify track ID
+     * @returns 
+     */
+    async getTrackAudioAnalysis(track_id)  {
+        const response = await fetch("https://api.spotify.com/v1/audio-analysis/" + track_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING & FINISHING URLSearchParams
+    /**
+     * 
+     * @param {Array<string>} seed_artists
+     * @param {Array<string>} seed_genres 
+     * @param {Array<string>} seed_tracks 
+     * @param {int} limit 
+     * @returns 
+     */
+    async getRecommendations(seed_artists, seed_genres, seed_tracks, limit)  {
+        const params = new URLSearchParams();
+        params.append("seed_artists", seed_artists.join(","));
+        params.append("seed_genres", seed_genres.join(","));
+        params.append("seed_tracks", seed_tracks.join(","));
+        params.append("limit", limit);
+        
+        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
     }
 
 /*--------------------------------------------------------------------------------
@@ -196,10 +426,28 @@ class SpotifyAPI  {
 
     //NEEDS WRITING AND TESTING
     /**
-     * 
+     * Get the current user's followed artists
+     * @param {int} limit 
+     * @param {int} after 
+     * @returns 
      */
-    async getFollowedArtists()  {
+    async getFollowedArtists(limit, after)  {
+        const params = new URLSearchParams();
+        params.append("type", "artist");
+        params.append("after", after);
+        params.append("limit", limit)
 
+        const response = await fetch("https://api.spotify.com/v1/me/following" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+        });
+
+        const data = await response.json();
+        return data;
     }
 
     //NEEDS TESTING
@@ -301,13 +549,54 @@ class SpotifyAPI  {
 /*--------------------------------------------------------------------------------
     Playlist Methods
 --------------------------------------------------------------------------------*/
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} playlist_id the playlist id of the playlist to get information on
+     * @returns 
+     */
+    async getPlaylist(playlist_id)  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
 
-    async getPlaylist()  {
-
+        const data = await response.json();
+        return data;
     }
 
-    async changePlaylistDetails()  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @param {string} newName 
+     * @param {bool} newPublic 
+     * @param {bool} newCollaborative 
+     * @param {string} newDescription 
+     * @returns 
+     */
+    async changePlaylistDetails(playlist_id, newName, newPublic, newCollaborative, newDescription)  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: {
+                name: newName,
+                public: newPublic,
+                collaborative: newCollaborative,
+                description: newDescription
+            }
+        });
 
+        const data = await response.json();
+        return data;
     }
 
     /**
@@ -331,7 +620,7 @@ class SpotifyAPI  {
 
     //NEEDS TESTING
     /**
-     * 
+     * Add tracks to the specified playlist
      * @param {string} playlist_id the playlist's Spotify ID. 
      * @param {Array<string>} uris array of spotify track uris to add to the playlist (cannot exceed 100 track uris)
      * @returns 
@@ -353,12 +642,62 @@ class SpotifyAPI  {
         return data;
     }
 
-    async updatePlaylistItems()  {
+    //NEEDS TESTING & WRITING
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @param {Array<strings>} uris 
+     * @param {int} range_start 
+     * @param {int} insert_before 
+     * @param {int} insert_after 
+     * @param {string} snapshot_id 
+     * @returns 
+     */
+    async updatePlaylistItems(playlist_id, uris, range_start, insert_before, insert_after, snapshot_id)  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: {
+                "uris" : uris
+            }
+        });
 
+        const data = await response.json();
+        return data;
     }
 
-    async removePlaylistItems()  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} tracks array of spotify track IDs to remove
+     * @param {string} snapshot_id the snapshot of the playlist to make edits to
+     * @returns 
+     */
+    async removePlaylistItems(tracks, snapshot_id)  {
+        const removeTrackObject = [];
+        for (let i = 0; i < tracks.length; i++)  {
+            removeTrackObject.push({ "uri" : ("spotify:track:" + tracks[i]) });
+        }
 
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
+            method: "DELETE",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: {
+                "tracks": removeTrackObject,
+                "snapshot_id" : snapshot_id
+            }
+        });
+
+        const data = await response.json();
+        return data;
     }
 
     /**
@@ -368,7 +707,11 @@ class SpotifyAPI  {
      * @returns 
      */
     async getCurrentUserPlaylists(limit, offset)  {
-        const response = await fetch("https://api.spotify.com/v1/me/playlists", {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        const response = await fetch("https://api.spotify.com/v1/me/playlists?" + params.toString(), {
             method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
@@ -389,7 +732,11 @@ class SpotifyAPI  {
      * @returns Spotify JSON response with the playists found for the specified user
      */
     async getUserPlaylists(user_id, limit, offset)  {
-        const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists", {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists?" + params.toString(), {
             method: "GET",
             headers: {
                 'Authorization': 'Bearer ' + this.access_token,
@@ -432,12 +779,55 @@ class SpotifyAPI  {
         return data;
     }
 
-    async getFeaturedPLaylists()  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {int} limit 
+     * @param {int} offset 
+     * @returns 
+     */
+    async getFeaturedPLaylists(limit, offset)  {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
 
+        const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+        });
+
+        const data = await response.json();
+        return data;
     }
 
-    async getCategorysPlaylists()  {
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} category_id 
+     * @param {int} limit 
+     * @param {int} offset 
+     * @returns 
+     */
+    async getCategorysPlaylists(category_id, limit, offset)  {
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
 
+        const response = await fetch("https://api.spotify.com/v1/browse/categories/" + category_id + "/playlists?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+        });
+
+        const data = await response.json();
+        return data;
     }
 
     //NEEDS TESTING
@@ -459,9 +849,26 @@ class SpotifyAPI  {
         const data = await response.json();
         return data;
     }
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} playlist_id 
+     * @param {string} image_string 
+     * @returns 
+     */
+    async addCustomPlaylistCoverImage(playlist_id, image_string)  {
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body: image_string
+        });
 
-    async addCustomPlaylistCoverImage()  {
-
+        const data = await response.json();
+        return data;
     }
 
 /*--------------------------------------------------------------------------------
