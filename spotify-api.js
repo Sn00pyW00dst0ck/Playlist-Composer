@@ -1,3 +1,4 @@
+const { param } = require('express/lib/request');
 const { contentType } = require('express/lib/response');
 
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -5,16 +6,16 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
 /**
  * A class written by Gabriel Aldous which handles all interaction with the SPOTIFY-WEB-API.
  * This is a work in progress. Much of this code is untested and should not be used yet...
+ * 
  * TO DO:
+ * 
  *      1) FIX AUTHENTICATION METHODS
- *      **) ERROR HANDLING!!!!!
- *      ***) UPDATE REQUIRED APP SCOPES
+ *          * ERROR HANDLING - HANDLE NON-200 STATUS CODE RESPONSES FROM SPOTIFY
+ *              * UPDATE REQUIRED APP SCOPES
  *      2) AUTOMATIC REFRESH TOKEN
  *      3) TEST GET INFORMATION FUNCTIONS
- *      4) WRITE AND TEST PLAYLIST CREATION / EDIT FUNCTIONS
+ *      4) TEST PLAYLIST CREATION / EDIT FUNCTIONS
  *      5) SEARCH FUNCTIONS
- * 
- * STANDARDIZE ARGUMENTS BY MAKING PLURAL ARGS ARRAYS...
  */
 class SpotifyAPI  {
     /**
@@ -85,6 +86,141 @@ class SpotifyAPI  {
         const data = await response.json();
         return data.body;
     }
+
+/*--------------------------------------------------------------------------------
+    Albums Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
+
+/*--------------------------------------------------------------------------------
+    Artists Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} artist_id the spotify ID of the artist
+     * @returns 
+     */
+    async getArtist(artist_id)  {
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} artist_ids an array of spotify artist IDs. Maximum size: 50
+     * @returns 
+     */
+    async getSeveralArtists(artist_ids)  {
+        const params = new URLSearchParams();
+        params.append("ids", artist_ids.join(","));
+
+        const response = await fetch("https://api.spotify.com/v1/artists?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} artist_id the spotify ID of the artist
+     * @param {Array<string>} include_groups string array of types of albums to return. Valid string values: "single", "album", "appears_on", "collaboration"
+     * @param {int} limit 
+     * @param {int} offset 
+     * @returns 
+     */
+    async getArtistsAlbums(artist_id, include_groups, limit, offset)  {
+        const params = new URLSearchParams();
+        params.append("include_groups", include_groups.join(","));
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/albums", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} artist_id the spotify ID of the artist
+     * @returns 
+     */
+    async getArtistsTopTracks(artist_id)  {
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/top-tracks", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} artist_id the spotify ID of the artist
+     * @returns 
+     */
+    async getArtistsRelatedArtists(artist_id)  {
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/related-artists", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+/*--------------------------------------------------------------------------------
+    Shows Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
+
+/*--------------------------------------------------------------------------------
+    Episodes Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
 
 /*--------------------------------------------------------------------------------
     Tracks Methods
@@ -313,6 +449,12 @@ class SpotifyAPI  {
         const data = await response.json();
         return data;
     }
+
+/*--------------------------------------------------------------------------------
+    Search Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
 
 /*--------------------------------------------------------------------------------
     Users Methods
@@ -916,6 +1058,34 @@ class SpotifyAPI  {
         const data = await response.json();
         return data;
     }
+
+/*--------------------------------------------------------------------------------
+    Genres Methods
+--------------------------------------------------------------------------------*/
+    //NEEDS TESTING
+    /**
+     * Get a list of available genre seeds for use with recommendation methods...
+     * @returns 
+     */
+    async getAvailableGenreSeeds()  {
+        const response = await fetch("https://api.spotify.com/v1/recommendations/available-genre-seeds", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+
+        const data = await response.json();
+        return data;
+    }
+
+/*--------------------------------------------------------------------------------
+    Spotify Web Player Methods
+--------------------------------------------------------------------------------*/
+
+    //DO WE NEED THIS SECTION??
 
 /*--------------------------------------------------------------------------------
     Markets Methods
