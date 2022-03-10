@@ -453,8 +453,8 @@ class SpotifyAPI  {
     //NEEDS TESTING
     /**
      * 
-     * @param {string} ids 
-     * @param {string} type 
+     * @param {Array<string>} ids an array of Spotify IDs of artists / users
+     * @param {string} type The ID type. Allowed values: "artist", "user"
      * @returns 
      */
     async followArtistsOrUsers(ids, type)  {
@@ -466,7 +466,7 @@ class SpotifyAPI  {
             },
             json : true, 
             body : {
-                ids : ids
+                ids : ids.join(",")
             }
         });
 
@@ -477,8 +477,8 @@ class SpotifyAPI  {
     //NEEDS TESTING
     /**
      * 
-     * @param {string} ids 
-     * @param {string} type 
+     * @param {Array<string>} ids an array of Spotify IDs of artists / users
+     * @param {string} type The ID type. Allowed values: "artist", "user"
      * @returns 
      */
     async unfollowArtistsOrUsers(ids, type)  {
@@ -490,7 +490,7 @@ class SpotifyAPI  {
             },
             json : true, 
             body : {
-                ids : ids
+                ids : ids.join(",")
             }
         });
 
@@ -501,8 +501,8 @@ class SpotifyAPI  {
     //NEEDS TESTING
     /**
      * 
-     * @param {Array<string>} ids 
-     * @param {string} type 
+     * @param {Array<string>} ids an array of Spotify IDs of artists / users
+     * @param {string} type The ID type. Allowed values: "artist", "user"
      * @returns 
      */
     async checkUserFollowsArtistsOrUsers(ids, type)  {
@@ -514,7 +514,7 @@ class SpotifyAPI  {
             },
             json : true, 
             body : {
-                ids : ids
+                ids : ids.join(",")
             }
         });
 
@@ -525,21 +525,21 @@ class SpotifyAPI  {
     //NEEDS TESTING
     /**
      * 
-     * @param {string} playlist_id 
-     * @param {Array<string>} ids 
+     * @param {string} playlist_id the spotify ID of the playlist to check
+     * @param {Array<string>} ids an array of Spotify IDs of artists / users
      * @returns 
      */
     async checkUsersFollowsPlaylist(playlist_id, ids)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/followers/contains", {
+        const params = new URLSearchParams();
+        params.append("ids", ids.join(","));
+
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/followers/contains?" + params.toString(), {
             method : "GET",
             headers : {
                 'Authorization': 'Bearer ' + this.access_token,
                 'Content-Type': 'application/json'
             },
-            json : true, 
-            body : {
-                ids : ids
-            }
+            json : true
         });
 
         const data = await response.json();
@@ -673,16 +673,18 @@ class SpotifyAPI  {
     //NEEDS TESTING
     /**
      * 
-     * @param {Array<string>} tracks array of spotify track IDs to remove
+     * @param {Array<string>} track_ids array of spotify track IDs to remove
      * @param {string} snapshot_id the snapshot of the playlist to make edits to
      * @returns 
      */
-    async removePlaylistItems(tracks, snapshot_id)  {
+    async removePlaylistItems(track_ids, snapshot_id)  {
+        //Build the Spotify URI from the track IDs
         const removeTrackObject = [];
-        for (let i = 0; i < tracks.length; i++)  {
-            removeTrackObject.push({ "uri" : ("spotify:track:" + tracks[i]) });
+        for (let i = 0; i < track_ids.length; i++)  {
+            removeTrackObject.push({ "uri" : ("spotify:track:" + track_ids[i]) });
         }
 
+        //Call the Spotify API
         const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
             method: "DELETE",
             headers: {
@@ -696,6 +698,7 @@ class SpotifyAPI  {
             }
         });
 
+        //Parse and return response
         const data = await response.json();
         return data;
     }
