@@ -1,12 +1,11 @@
 const express = require('express');
-const { append } = require('express/lib/response');
+const res = require('express/lib/response');
 const path = require('path');
-const request = require('request');
 const { URLSearchParams } = require('url');
 const SpotifyAPI = require('./spotify-api');
-
 require('dotenv').config();
 
+//Setup the Port and express
 const PORT = process.env.PORT || 3001;
 const APP = express();
 
@@ -18,9 +17,15 @@ APP.get("/api", (req, res) => {
     res.json({ message: "Hello from server!" });
 });
 
-/*----------------------------------------------
+/*--------------------------------------------------------------------------------
+   Serving Webpages
+--------------------------------------------------------------------------------*/
+
+
+
+/*--------------------------------------------------------------------------------
    Spotify Credentials 
-----------------------------------------------*/
+--------------------------------------------------------------------------------*/
 
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || null;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || null;
@@ -47,10 +52,12 @@ APP.get("/login/callback", async (req, res) =>  {
     let code = req.query.code || null;
     let state = req.query.state || null;
     
-    //Lets make some requests using the Spotify API object
+    //----- Lets make some requests using the Spotify API object -----//
+
+    //This line has the object get the access token for making spotify api calls
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
 
-    //Print songs from a playlist belonging to the current user...
+    //Let's print songs from a playlist belonging to the current user...
     console.log("Songs belonging to a playlist of current user: ");
     let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
     let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[1].id);
@@ -86,12 +93,17 @@ APP.get("/login/callback", async (req, res) =>  {
     res.redirect("http://localhost/3000/LoggedIn");
 });
 
+/*
+THIS HAS NOT BEEN FINALIZED YET...
+I am trying to find a way for this to be done within the SpotifyAPI object...
+It is difficult...
+*/
 APP.get("/refresh_token", (req, res) =>  {
 
 });
 
-/*----------------------------------------------
+/*--------------------------------------------------------------------------------
    Setup Server Listening On Port
-----------------------------------------------*/
+--------------------------------------------------------------------------------*/
 
 APP.listen(PORT, () =>  {console.log("Server is listening on port " + PORT)});

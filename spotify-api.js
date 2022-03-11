@@ -1,6 +1,3 @@
-const { param } = require('express/lib/request');
-const { contentType } = require('express/lib/response');
-
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
 /**
@@ -9,7 +6,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  * 
  * TO DO:
  * 
- *      1) FIX AUTHENTICATION METHODS
+ *      1) FIX AUTHENTICATION METHODS - look into using 'crypto' module to prevent Cross Site Scripting Attacks
  *          * ERROR HANDLING - HANDLE NON-200 STATUS CODE RESPONSES FROM SPOTIFY
  *              * UPDATE REQUIRED APP SCOPES LISTS
  *      2) AUTOMATIC REFRESH TOKEN
@@ -17,7 +14,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  * 
  * POSSIBLE FUTURE UPDATES:
  * 
- *      1) CREATE A METHOD TO AUTOMATICALLY BUILD A FETCH-REQUEST OPTIONS OBJECT GIVEN ENDPOINT AND TYPE OF REQUEST
+ *      1) CREATE A METHOD TO AUTOMATICALLY BUILD A FETCH-REQUEST OPTIONS OBJECT GIVEN TYPE OF REQUEST??
  */
 class SpotifyAPI  {
     /**
@@ -1316,7 +1313,7 @@ class SpotifyAPI  {
     Spotify Web Player Methods
 --------------------------------------------------------------------------------*/
 
-    //DO WE NEED THIS SECTION??
+    //DO WE NEED THIS SECTION?? - Probably...?
 
 /*--------------------------------------------------------------------------------
     Markets Methods
