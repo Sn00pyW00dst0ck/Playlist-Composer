@@ -93,6 +93,205 @@ class SpotifyAPI  {
 
     //DO WE NEED THIS SECTION??
 
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} album_id 
+     * @returns 
+     */
+    async getAlbum(album_id)  {
+        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id, {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} album_id 
+     * @returns 
+     */
+    async getSeveralAlbums(album_ids)  {
+        const params = new URLSearchParams();
+        params.append("ids", album_ids.join(","));
+
+        const response = await fetch("https://api.spotify.com/v1/albums?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} album_id 
+     * @param {int} limit
+     * @param {int} offset
+     * @returns 
+     */
+    async getAlbumTracks(album_id, limit, offset)  {
+        //Create URL Parameters
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id + "/tracks", {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {int} limit
+     * @param {int} offset
+     * @returns 
+     */
+    async getSavedAlbums(limit, offset)  {
+        //Create URL Parameters
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/me/albums?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} album_ids
+     * @returns 
+     */
+    async saveAlbums(album_ids)  {
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/me/albums", {
+            method: "PUT",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body:  {
+                ids: album_ids
+            }
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} album_ids
+     * @returns 
+     */
+    async removeAlbums(album_ids)  {
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/me/albums", {
+            method: "DELETE",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true, 
+            body:  {
+                ids: album_ids
+            }
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {Array<string>} album_ids
+     * @returns 
+     */
+    async checkSavedAlbums(album_ids)  {
+        //Create URL Parameters
+        const params = new URLSearchParams();
+        params.append("ids", album_ids.join(","));
+
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/me/albums/contains?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {int} limit
+     * @param {int} offset
+     * @returns 
+     */
+    async getNewReleases(limit, offset)  {
+        //Create URL Parameters
+        const params = new URLSearchParams();
+        params.append("limit", limit);
+        params.append("offset", offset);
+
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/browse/new-releases?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
+
+
 /*--------------------------------------------------------------------------------
     Artists Methods
 --------------------------------------------------------------------------------*/
@@ -453,8 +652,38 @@ class SpotifyAPI  {
 /*--------------------------------------------------------------------------------
     Search Methods
 --------------------------------------------------------------------------------*/
-
-    //DO WE NEED THIS SECTION??
+    //NEEDS TESTING
+    /**
+     * 
+     * @param {string} query 
+     * @param {Array<string>} type_array 
+     * @param {string} include_external 
+     * @param {int} limit 
+     * @param {int} offset 
+     * @returns 
+     */
+    async search(query, type_array, include_external, limit, offset)  {
+        //Create URL Search Parameters
+        const params = new URLSearchParams();
+        params.append("q", query);
+        params.append("type", type_array.join(","));
+        params.append("include_external", include_external);
+        params.append("limit", limit);
+        params.append("offset", offset);
+        
+        //Make Request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), {
+            method: "GET",
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        });
+        
+        const data = await response.json();
+        return data;
+    }
 
 /*--------------------------------------------------------------------------------
     Users Methods
