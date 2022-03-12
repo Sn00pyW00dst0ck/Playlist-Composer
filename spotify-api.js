@@ -1,5 +1,7 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
+
+
 /**
  * A class written by Gabriel Aldous which handles all interaction with the SPOTIFY-WEB-API.
  * This is a work in progress. Much of this code is untested and should not be used yet...
@@ -11,10 +13,6 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  *              * UPDATE REQUIRED APP SCOPES LISTS
  *      2) AUTOMATIC REFRESH TOKEN
  *      3) TEST PRETTY MUCH EVERYTHING!!!
- * 
- * POSSIBLE FUTURE UPDATES:
- * 
- *      1) CREATE A METHOD TO AUTOMATICALLY BUILD A FETCH-REQUEST OPTIONS OBJECT GIVEN TYPE OF REQUEST??
  */
 class SpotifyAPI  {
     /**
@@ -29,6 +27,24 @@ class SpotifyAPI  {
         this.refresh_token = null;
         this.expires_in = null;
     };
+
+    /**
+     * Generates a basic fetch option for calling the Spotify API endpoints.
+     * @param {string} type a string for type of fetch request. 
+     * 
+     * Valid values: "GET", "POST", "PUT", "DELETE"
+     * @returns JSON object representing 
+     */
+    #basicSpotifyFetchOptions(type)  {
+        return {
+            method: type,
+            headers: {
+                'Authorization': 'Bearer ' + this.access_token,
+                'Content-Type': 'application/json'
+            },
+            json: true
+        };
+    }
 
 /*--------------------------------------------------------------------------------
     OAuth2 Authentication Methods
@@ -99,15 +115,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getAlbum(album_id)  {
-        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id, this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -122,15 +130,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", album_ids.join(","));
 
-        const response = await fetch("https://api.spotify.com/v1/albums?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/albums?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -150,15 +150,7 @@ class SpotifyAPI  {
         params.append("offset", offset);
 
         //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id + "/tracks", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/albums/" + album_id + "/tracks", this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -177,15 +169,7 @@ class SpotifyAPI  {
         params.append("offset", offset);
 
         //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/me/albums?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me/albums?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -197,19 +181,11 @@ class SpotifyAPI  {
      * @returns 
      */
     async saveAlbums(album_ids)  {
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = { ids: album_ids };
+
         //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/me/albums", {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body:  {
-                ids: album_ids
-            }
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me/albums", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -221,19 +197,11 @@ class SpotifyAPI  {
      * @returns 
      */
     async removeAlbums(album_ids)  {
-        //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/me/albums", {
-            method: "DELETE",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body:  {
-                ids: album_ids
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("DELETE");
+        fetchOptions.body = { ids: album_ids };
         
+        //Send request to Spotify API
+        const response = await fetch("https://api.spotify.com/v1/me/albums", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -250,15 +218,7 @@ class SpotifyAPI  {
         params.append("ids", album_ids.join(","));
 
         //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/me/albums/contains?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me/albums/contains?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -277,15 +237,7 @@ class SpotifyAPI  {
         params.append("offset", offset);
 
         //Send request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/browse/new-releases?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/browse/new-releases?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -304,15 +256,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getArtist(artist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id, this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -327,15 +271,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", artist_ids.join(","));
 
-        const response = await fetch("https://api.spotify.com/v1/artists?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/artists?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -355,15 +291,7 @@ class SpotifyAPI  {
         params.append("limit", limit);
         params.append("offset", offset);
 
-        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/albums", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/albums", this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -375,15 +303,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getArtistsTopTracks(artist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/top-tracks", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/top-tracks", this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -395,15 +315,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getArtistsRelatedArtists(artist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/related-artists", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/artists/" + artist_id + "/related-artists", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -430,15 +342,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getTrack(track_id)  {
-        const response = await fetch("https://api.spotify.com/v1/tracks/" + track_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/tracks/" + track_id, this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -453,15 +357,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", track_ids.join(","));
 
-        const response = await fetch("https://api.spotify.com/v1/tracks?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/tracks?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -478,15 +374,7 @@ class SpotifyAPI  {
         params.append("limit", limit);
         params.append("offset", offset);
 
-        const response = await fetch("https://api.spotify.com/v1/me/tracks?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me/tracks?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -498,16 +386,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async saveTracksForUser(track_ids)  {
-        const response = await fetch("https://api.spotify.com/v1/me/tracks", {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: track_ids
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = track_ids;
         
+        const response = await fetch("https://api.spotify.com/v1/me/tracks", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -519,16 +401,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async removeTracksForUser(track_ids)  {
-        const response = await fetch("https://api.spotify.com/v1/me/tracks", {
-            method: "DELETE",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true,
-            body: track_ids
-        });
-        
+        let fetchOptions = this.#basicSpotifyFetchOptions("DELETE");
+        fetchOptions.body = track_ids;
+
+        const response = await fetch("https://api.spotify.com/v1/me/tracks", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -543,15 +419,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", track_ids.join(",")); //Take track_ids array and make it comma separated string...
 
-        const response = await fetch("https://api.spotify.com/v1/me/tracks/contains?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me/tracks/contains?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -566,15 +434,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", track_ids.join(",")); //Take track_ids array and make it comma separated string...
 
-        const response = await fetch("https://api.spotify.com/v1/audio-features?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/audio-features?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -586,15 +446,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getTrackAudioFeatures(track_id)  {
-        const response = await fetch("https://api.spotify.com/v1/audio-features/" + track_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/audio-features/" + track_id, this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -606,15 +458,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getTrackAudioAnalysis(track_id)  {
-        const response = await fetch("https://api.spotify.com/v1/audio-analysis/" + track_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/audio-analysis/" + track_id, this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -635,15 +479,7 @@ class SpotifyAPI  {
         params.append("seed_tracks", seed_tracks.join(","));
         params.append("limit", limit);
         
-        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -671,15 +507,7 @@ class SpotifyAPI  {
         params.append("offset", offset);
         
         //Make Request to Spotify API
-        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/recommendations?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -694,15 +522,7 @@ class SpotifyAPI  {
      *          getting public user profile data
      */
     async getCurrentUserProfile()  {
-        const response = await fetch("https://api.spotify.com/v1/me", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-        
+        const response = await fetch("https://api.spotify.com/v1/me", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -718,15 +538,7 @@ class SpotifyAPI  {
         params.append("offset", 0);
         params.append("time_range", "medium_term");
 
-        const response = await fetch("https://api.spotify.com/v1/me/top/" + type + "?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/me/top/" + type + "?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -738,15 +550,7 @@ class SpotifyAPI  {
      *          getting public user profile data
      */
     async getUserProfile(user_id)  {
-        const response = await fetch("https://api.spotify.com/v1/users/" + user_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/users/" + user_id, this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -759,18 +563,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async followPlaylist(playlist_id, _public)  {
-        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", {
-            method : "PUT",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true,
-            body : {
-                public : _public
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = { public : _public };
 
+        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -781,15 +577,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async unfollowPlaylist()  {
-        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", {
-            method : "DELETE",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/playlist/" + playlist_id + "/followers", this.#basicSpotifyFetchOptions("DELETE"));
         const data = await response.json();
         return data;
     }
@@ -807,15 +595,7 @@ class SpotifyAPI  {
         params.append("after", after);
         params.append("limit", limit)
 
-        const response = await fetch("https://api.spotify.com/v1/me/following" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/me/following" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -828,18 +608,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async followArtistsOrUsers(ids, type)  {
-        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, {
-            method : "PUT",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true, 
-            body : {
-                ids : ids.join(",")
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = { ids : ids.join(",") };
 
+        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -852,18 +624,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async unfollowArtistsOrUsers(ids, type)  {
-        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, {
-            method : "DELETE",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true, 
-            body : {
-                ids : ids.join(",")
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("DELETE");
+        fetchOptions.body = { ids : ids.join(",") };
 
+        const response = await fetch("https://api.spotify.com/v1/me/following?type=" + type, fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -876,18 +640,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async checkUserFollowsArtistsOrUsers(ids, type)  {
-        const response = await fetch("https://api.spotify.com/v1/me/following/contains?type=" + type, {
-            method : "GET",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true, 
-            body : {
-                ids : ids.join(",")
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("GET");
+        fetchOptions.body = { ids : ids.join(",") };
 
+        const response = await fetch("https://api.spotify.com/v1/me/following/contains?type=" + type, fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -903,15 +659,7 @@ class SpotifyAPI  {
         const params = new URLSearchParams();
         params.append("ids", ids.join(","));
 
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/followers/contains?" + params.toString(), {
-            method : "GET",
-            headers : {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json : true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/followers/contains?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -926,15 +674,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getPlaylist(playlist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -950,21 +690,15 @@ class SpotifyAPI  {
      * @returns 
      */
     async changePlaylistDetails(playlist_id, newName, newPublic, newCollaborative, newDescription)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: {
-                name: newName,
-                public: newPublic,
-                collaborative: newCollaborative,
-                description: newDescription
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = {
+            name: newName,
+            public: newPublic,
+            collaborative: newCollaborative,
+            description: newDescription
+        };
 
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id, fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -975,15 +709,7 @@ class SpotifyAPI  {
      * @returns Spotify JSON response with the tracks found in the specified playlist
      */
     async getPlaylistItems(playlist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", this.#basicSpotifyFetchOptions("GET"));        
         const data = await response.json();
         return data;
     }
@@ -996,18 +722,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async addItemsToPlaylist(playlist_id, uris)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
-            method: "POST",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: {
-                "uris" : uris
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("POST");
+        fetchOptions.body = { "uris" : uris };
 
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -1024,18 +742,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async updatePlaylistItems(playlist_id, uris, range_start, insert_before, insert_after, snapshot_id)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: {
-                "uris" : uris
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = { "uris" : uris };
 
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -1054,19 +764,15 @@ class SpotifyAPI  {
             removeTrackObject.push({ "uri" : ("spotify:track:" + track_ids[i]) });
         }
 
+        //Create the fetch options
+        let fetchOptions = this.#basicSpotifyFetchOptions("DELETE");
+        fetchOptions.body = {
+            "tracks": removeTrackObject,
+            "snapshot_id" : snapshot_id
+        };
+
         //Call the Spotify API
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", {
-            method: "DELETE",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: {
-                "tracks": removeTrackObject,
-                "snapshot_id" : snapshot_id
-            }
-        });
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", fetchOptions);
 
         //Parse and return response
         const data = await response.json();
@@ -1081,18 +787,10 @@ class SpotifyAPI  {
      */
     async getCurrentUserPlaylists(limit, offset)  {
         const params = new URLSearchParams();
-        params.append("limit", limit);
-        params.append("offset", offset);
+        params.append("limit", limit || 20);
+        params.append("offset", offset || 0);
 
-        const response = await fetch("https://api.spotify.com/v1/me/playlists?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/me/playlists?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1106,18 +804,10 @@ class SpotifyAPI  {
      */
     async getUserPlaylists(user_id, limit, offset)  {
         const params = new URLSearchParams();
-        params.append("limit", limit);
-        params.append("offset", offset);
+        params.append("limit", limit || 20);
+        params.append("offset", offset || 0);
 
-        const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/users/" + user_id + "/playlists?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1133,21 +823,15 @@ class SpotifyAPI  {
      * @returns 
      */
     async createPlaylist(user_id, name, _public, collaborative, description)  {
-        const response = await fetch("https://api.spotify.com/v1/user/" + user_id + "/playlists", {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: {
-                "name" : name,
-                "public" : _public,
-                "collaborative" : collaborative,
-                "description" : description
-            }
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = {
+            "name" : name,
+            "public" : _public,
+            "collaborative" : collaborative,
+            "description" : description
+        };
 
+        const response = await fetch("https://api.spotify.com/v1/user/" + user_id + "/playlists", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -1164,15 +848,7 @@ class SpotifyAPI  {
         params.append("limit", limit);
         params.append("offset", offset);
 
-        const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/browse/featured-playlists?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1190,15 +866,7 @@ class SpotifyAPI  {
         params.append("limit", limit);
         params.append("offset", offset);
 
-        const response = await fetch("https://api.spotify.com/v1/browse/categories/" + category_id + "/playlists?" + params.toString(), {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/browse/categories/" + category_id + "/playlists?" + params.toString(), this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1210,18 +878,11 @@ class SpotifyAPI  {
      * @returns a set of images
      */
     async getPlaylistCoverImage(playlist_id)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
+
     //NEEDS TESTING
     /**
      * 
@@ -1230,16 +891,10 @@ class SpotifyAPI  {
      * @returns 
      */
     async addCustomPlaylistCoverImage(playlist_id, image_string)  {
-        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", {
-            method: "PUT",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true, 
-            body: image_string
-        });
+        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
+        fetchOptions.body = image_string;
 
+        const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/images", fetchOptions);
         const data = await response.json();
         return data;
     }
@@ -1254,15 +909,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getSeveralBrowseCategories()  {
-        const response = await fetch("https://api.spotify.com/v1/categories", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/categories", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1274,15 +921,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getSingleBrowseCategory(category_id)  {
-        const response = await fetch("https://api.spotify.com/v1/categories/" + category_id, {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/categories/" + category_id, this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1296,15 +935,7 @@ class SpotifyAPI  {
      * @returns 
      */
     async getAvailableGenreSeeds()  {
-        const response = await fetch("https://api.spotify.com/v1/recommendations/available-genre-seeds", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/recommendations/available-genre-seeds", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }
@@ -1325,15 +956,7 @@ class SpotifyAPI  {
      * @returns A markets object with an array of country codes
      */
     async getAvailableMarkets()  {
-        const response = await fetch("https://api.spotify.com/v1/markets", {
-            method: "GET",
-            headers: {
-                'Authorization': 'Bearer ' + this.access_token,
-                'Content-Type': 'application/json'
-            },
-            json: true
-        });
-
+        const response = await fetch("https://api.spotify.com/v1/markets", this.#basicSpotifyFetchOptions("GET"));
         const data = await response.json();
         return data;
     }

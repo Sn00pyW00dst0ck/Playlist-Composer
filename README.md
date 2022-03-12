@@ -12,7 +12,6 @@ users.
 
 To set up the development environment on your computer, ensure that Node.js is installed. 
 
-
 ## Planned Features
 
 - Ability to create a playlist based on music tastes of multiple users

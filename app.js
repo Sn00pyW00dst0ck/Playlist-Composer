@@ -60,7 +60,7 @@ APP.get("/login/callback", async (req, res) =>  {
     //Let's print songs from a playlist belonging to the current user...
     console.log("Songs belonging to a playlist of current user: ");
     let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
-    let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[1].id);
+    let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[0].id);
     for (let i = 0; i < tracks.items.length; i++)  {
         console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
     }
