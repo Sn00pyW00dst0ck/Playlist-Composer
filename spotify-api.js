@@ -1,7 +1,5 @@
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
 
-
-
 /**
  * A class written by Gabriel Aldous which handles all interaction with the SPOTIFY-WEB-API.
  * This is a work in progress. Much of this code is untested and should not be used yet...
@@ -13,6 +11,7 @@ const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch
  *              * UPDATE REQUIRED APP SCOPES LISTS
  *      2) AUTOMATIC REFRESH TOKEN
  *      3) TEST PRETTY MUCH EVERYTHING!!!
+ *      4) Create method for logging out of account!!
  */
 class SpotifyAPI  {
     /**
@@ -32,7 +31,7 @@ class SpotifyAPI  {
      * Generates a basic fetch option for calling the Spotify API endpoints.
      * @param {string} type a string for type of fetch request. 
      * 
-     * Valid values: "GET", "POST", "PUT", "DELETE"
+     * Valid types: "GET", "POST", "PUT", "DELETE"
      * @returns JSON object representing 
      */
     #basicSpotifyFetchOptions(type)  {
@@ -78,6 +77,9 @@ class SpotifyAPI  {
         this.access_token = data.access_token;
         this.refresh_token = data.refresh_token;
         this.expires_in = data.expires_in;
+
+        //Setup the refresh token to work automatically using a JavaScript interval
+        this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in));
     }
 
     /**
@@ -86,20 +88,29 @@ class SpotifyAPI  {
      *          a new access_token, and expires_in given the refresh token
      */
     async refreshAccessToken()  {
+        const params = new URLSearchParams();
+        params.append("grant_type", "refresh_token");
+        params.append("refresh_token", this.refresh_token);
+
         const response = await fetch("https://accounts.spotify.com/api/token", {
             method: "POST",
+            url: "https://accounts.spotify.com/api/token", 
             headers:  {
-                'Authorization': 'Basic ' + (new Buffer(client_id + ':' + client_secret).toString('base64')) 
+                'Content-Type' : 'application/x-www-form-urlencoded',
+                'Authorization': 'Basic ' + (new Buffer(this.client_id + ':' + this.client_secret).toString('base64'))
             },
-            form: {
-                grant_type: 'refresh_token',
-                refresh_token: refreshToken
-            },
-            json: true
+            json: true, 
+            body: params
         });
 
         const data = await response.json();
-        return data.body;
+
+        this.access_token = data.access_token;
+        this.expires_in = data.expires_in;
+
+        //Setup the next automatic call... (Maybe set timeout would work better here...)
+        clearInterval(this.refresh_timeout);
+        this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in));
     }
 
 /*--------------------------------------------------------------------------------
