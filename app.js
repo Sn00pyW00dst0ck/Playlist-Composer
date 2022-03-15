@@ -51,6 +51,7 @@ APP.get("/login/callback", async (req, res) =>  {
     //This line has the object get the access token for making spotify api calls
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
 
+    /*
     //Let's print songs from a playlist belonging to the current user...
     console.log("Songs belonging to a playlist of current user: ");
     let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
@@ -82,6 +83,7 @@ APP.get("/login/callback", async (req, res) =>  {
         console.log(othersPlaylistTracks.items[i].track.name + ", " +  othersPlaylistTracks.items[i].track.id);
     }
     console.log();
+    */
 
     //Redirect the user to the next webpage
     res.redirect('http://localhost:3000/choose-users');
