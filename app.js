@@ -84,7 +84,7 @@ APP.get("/login/callback", async (req, res) =>  {
     console.log();
 
     //Redirect the user to the next webpage
-    res.sendFile("client/public/index.html");
+    res.redirect('http://localhost:3000/choose-users');
 });
 
 /*--------------------------------------------------------------------------------
