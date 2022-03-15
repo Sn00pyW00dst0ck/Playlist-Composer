@@ -18,12 +18,6 @@ APP.get("/api", (req, res) => {
 });
 
 /*--------------------------------------------------------------------------------
-   Serving Webpages
---------------------------------------------------------------------------------*/
-
-
-
-/*--------------------------------------------------------------------------------
    Spotify Credentials 
 --------------------------------------------------------------------------------*/
 
@@ -90,16 +84,7 @@ APP.get("/login/callback", async (req, res) =>  {
     console.log();
 
     //Redirect the user to the next webpage
-    res.redirect("http://localhost/3000/LoggedIn");
-});
-
-/*
-THIS HAS NOT BEEN FINALIZED YET...
-I am trying to find a way for this to be done within the SpotifyAPI object...
-It is difficult...
-*/
-APP.get("/refresh_token", (req, res) =>  {
-
+    res.sendFile("client/public/index.html");
 });
 
 /*--------------------------------------------------------------------------------

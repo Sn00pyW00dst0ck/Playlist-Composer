@@ -4,15 +4,37 @@ import './index.css';
 import App from './App';
 import Button from './components/Button'
 import reportWebVitals from './reportWebVitals';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  NavLink
+} from 'react-router-dom';
 
+//Added Router and Routes for multi-page stuff. 
+//Determine if we want this or if we want multiple react apps to be served from express
 ReactDOM.render(
   <React.StrictMode>
     <a href="http://localhost:3001/login">Click Me</a>
-    <Button />
     <App />
     <App />
-    <Button />
-    <App />
+
+    
+    <Router>
+      <Routes>
+
+        <Route path="/" element={
+          <p>Home Page!</p>
+        }></Route>
+          
+        <Route path="/choose-users" element={
+          <p>Choose the users you want to show!</p>
+        }></Route>
+
+        <Route path="/loading-playlist" element={<Button/>}></Route>
+
+      </Routes>
+    </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
