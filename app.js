@@ -50,7 +50,7 @@ APP.get("/login/callback", async (req, res) =>  {
 
     //This line has the object get the access token for making spotify api calls
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
-
+    console.log("SPOTIFY-API-OBJECT LOGGED IN!");
     /*
     //Let's print songs from a playlist belonging to the current user...
     console.log("Songs belonging to a playlist of current user: ");
