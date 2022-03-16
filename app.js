@@ -51,6 +51,7 @@ APP.get("/login/callback", async (req, res) =>  {
     //This line has the object get the access token for making spotify api calls
     await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
     console.log("SPOTIFY-API-OBJECT LOGGED IN!");
+    
     /*
     //Let's print songs from a playlist belonging to the current user...
     console.log("Songs belonging to a playlist of current user: ");
@@ -60,7 +61,6 @@ APP.get("/login/callback", async (req, res) =>  {
         console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
     }
     console.log();
-
     //Let's Print the Current Users Top Tracks...
     console.log("Current User Top Tracks: ")
     let artists = await SpotifyAPIObject.getCurrentUserTopItems("tracks");
@@ -68,13 +68,11 @@ APP.get("/login/callback", async (req, res) =>  {
         console.log(artists.items[i].name);
     }
     console.log();
-
     //Let's print another user's public information...
     let other = await SpotifyAPIObject.getUserProfile("apml.trickster");
     console.log("OTHER USER PROFILE:");
     console.log(other);
     console.log();
-
     //Let's print some songs from a playlist belonging to that other user...
     console.log("Songs from one of the other users playlists:");
     let othersPlaylist = await SpotifyAPIObject.getUserPlaylists("apml.trickster");
@@ -84,6 +82,7 @@ APP.get("/login/callback", async (req, res) =>  {
     }
     console.log();
     */
+    
 
     //Redirect the user to the next webpage
     res.redirect('http://localhost:3000/choose-users');

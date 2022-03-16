@@ -1,7 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import Navbar from './components/Navbar';
+import LandingPage from './components/Landing-Page';
+import SelectUsers from './components/Select-Users-Page';
 import Button from './components/Button'
 import reportWebVitals from './reportWebVitals';
 import {
@@ -12,27 +14,29 @@ import {
 } from 'react-router-dom';
 
 //Added Router and Routes for multi-page stuff. 
-//Determine if we want this or if we want multiple react apps to be served from express
 ReactDOM.render(
   <React.StrictMode>
-    <a href="http://localhost:3001/login">Click Me</a>
-    <App />
-    <App />
-
     
     <Router>
       <Routes>
-
+        {/* Landing Page JSX */}
         <Route path="/" element={
-          <p>Home Page!</p>
+          <>
+          <Navbar />
+          <LandingPage />
+          </>
         }></Route>
-          
+        {/* Choose Users Page */}
         <Route path="/choose-users" element={
-          <p>Choose the users you want to show!</p>
+          <>
+          <Navbar />
+          <SelectUsers />
+          </>
         }></Route>
-
+        {/* Playlist Preview Page */}
         <Route path="/loading-playlist" element={<Button/>}></Route>
 
+        
       </Routes>
     </Router>
 
