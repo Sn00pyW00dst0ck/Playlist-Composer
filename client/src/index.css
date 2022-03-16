@@ -10,7 +10,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 
   /* Default Background SVG */
-  background-image: url(/src/imgs/wave-haikei.svg);
+  background-color: #001220;
   background-attachment: fixed;
   background-size: cover;
   background-position: center;
@@ -24,16 +24,38 @@ code {
 }
 
 /* CSS For Landing Page */
-.landing-main {
+section {
+  position: relative;
   text-align: center;
-  width: 100%;
-  padding-top: 40px;
-  height: 100vh;
+  padding: 80px 20vw;
+  min-height: 350px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
-.landing-text {
-  width: 60%;
-  align-items: center;
+.landing-about {
+  background-color: #39c97b;
+}
+
+.about {
+  width: 100%;
+  display: flex;
+}
+
+/* First wave spacer in landing page */
+.spacer {
+  aspect-ratio: 960/300;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+.layer1 {
+  background-image: url("./imgs/wave-haikei.svg");
+}
+
+.layer2 {
+  background-image: url("./imgs/layered-waves-haikei.svg");
 }

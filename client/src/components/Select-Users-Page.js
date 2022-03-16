@@ -6,7 +6,8 @@ function SelectUsers() {
     return(
         <>
         <section className="landing-main">
-            <h1>Choose the users you want to show!</h1>
+            <h1>Select Other Users To Customize Playlist For</h1>
+            
         </section>
         
         </>
