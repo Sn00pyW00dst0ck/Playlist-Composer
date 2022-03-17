@@ -1,10 +1,12 @@
 import React from 'react'
+import Navbar from './Navbar';
 import '../index.css';
 
 // Main Content area for landing page
 function LandingPage() {
     return(
         <>
+        <Navbar isLoggedin={false}/>
         {/* Header Section */}
         <section className="landing-main">
             <h1>Playlist Composer</h1>

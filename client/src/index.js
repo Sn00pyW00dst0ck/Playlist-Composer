@@ -1,45 +1,43 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import Navbar from './components/Navbar';
 import LandingPage from './components/Landing-Page';
-import SelectUsers from './components/Select-Users-Page';
-import Button from './components/Button'
+import SelectUsersPage from './components/Select-Users-Page';
+import PlaylistPage from './components/Playlist-Page'
+import ProtectedRoute from "./components/ProtectedRoute";
 import reportWebVitals from './reportWebVitals';
+
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  NavLink
+  Route
 } from 'react-router-dom';
 
 //Added Router and Routes for multi-page stuff. 
 ReactDOM.render(
   <React.StrictMode>
-    
+  
     <Router>
-      <Routes>
-        {/* Landing Page JSX */}
-        <Route path="/" element={
-          <>
-          <Navbar />
-          <LandingPage />
-          </>
-        }></Route>
-        {/* Choose Users Page */}
-        <Route path="/choose-users" element={
-          <>
-          <Navbar />
-          <SelectUsers />
-          </>
-        }></Route>
-        {/* Playlist Preview Page */}
-        <Route path="/loading-playlist" element={<Button/>}></Route>
+        <Routes>
+            {/* PUBLIC Landing Page */}
+            <Route path="/" element={
+                <LandingPage />
+            } />
 
-        
-      </Routes>
+            {/* PROTECTED ROUTES */}
+
+            {/* Select Users Page */}
+            <Route path="/choose-users" element={<ProtectedRoute />}>
+              <Route path="/choose-users" element={<SelectUsersPage />} />
+            </Route>
+
+            {/* Playlist Preview Page */}
+            <Route path="/preview-playlist" element={<ProtectedRoute />}>
+              <Route path="/preview-playlist" element={<PlaylistPage />} />
+            </Route>
+            
+        </Routes>
     </Router>
-
     
   </React.StrictMode>,
   document.getElementById('root')
