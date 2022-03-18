@@ -73,6 +73,8 @@ class SpotifyAPI  {
             body: params
         });
 
+        const data = await response.json();
+        
         //Handle an error
         if (response.status != 200)  {
             console.log("ERROR");
@@ -80,7 +82,7 @@ class SpotifyAPI  {
             return false;
         }
 
-        const data = await response.json();
+        
 
         //Set the access_token, refresh_token, and expires in
         this.access_token = data.access_token;
