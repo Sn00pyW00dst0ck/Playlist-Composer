@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import './Navbar.css'
 
 import SpotifyLoginButton from './SpotifyLoginButton';
-import useAuth from '../customHooks/useAuth';
 
 // Responsive navbar with page linking
 // Pass in profile pic 
