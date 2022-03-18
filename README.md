@@ -51,3 +51,4 @@ To set up the development environment on your computer, ensure that Node.js is i
         - When they are redirected back to the react app the useAuth hook fires and calls backend SpotifyAPI to login
         - ^That is done with a POST request to "/login" and it recieves a json object with boolean for success or failure
     - Added cors package to handle errors
+3. *Important!! run the node server before the react app or the react app will act very very strangely!!*
