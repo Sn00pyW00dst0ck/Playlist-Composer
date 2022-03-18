@@ -1,44 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import LandingPage from './components/Landing-Page';
-import SelectUsersPage from './components/Select-Users-Page';
-import PlaylistPage from './components/Playlist-Page'
-import ProtectedRoute from "./components/ProtectedRoute";
+import App from './App'
 import reportWebVitals from './reportWebVitals';
-
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route
-} from 'react-router-dom';
 
 //Added Router and Routes for multi-page stuff. 
 ReactDOM.render(
   <React.StrictMode>
-  
-    <Router>
-        <Routes>
-            {/* PUBLIC Landing Page */}
-            <Route path="/" element={
-                <LandingPage />
-            } />
-
-            {/* PROTECTED ROUTES */}
-
-            {/* Select Users Page */}
-            <Route path="/choose-users" element={<ProtectedRoute />}>
-              <Route path="/choose-users" element={<SelectUsersPage />} />
-            </Route>
-
-            {/* Playlist Preview Page */}
-            <Route path="/preview-playlist" element={<ProtectedRoute />}>
-              <Route path="/preview-playlist" element={<PlaylistPage />} />
-            </Route>
-            
-        </Routes>
-    </Router>
-    
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );

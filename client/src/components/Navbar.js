@@ -2,13 +2,17 @@ import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
 import './Navbar.css'
 
+import SpotifyLoginButton from './SpotifyLoginButton';
+import useAuth from '../customHooks/useAuth';
+
 // Responsive navbar with page linking
 // Pass in profile pic 
-function Navbar(props) {
+function Navbar({auth}) {
     // Onclick handling for profile button
     const [click, setClick] = useState(false);
-    const isLoggedin = props.isLoggedin
     const handleClick = () => setClick(!click);
+
+    const loggedIn = auth; 
 
     return(
         <nav className='navbar'>
@@ -23,7 +27,7 @@ function Navbar(props) {
                 <ul className='nav-menu'>
                 
                     {/* Navbar if user is logged out */}
-                    {!isLoggedin && 
+                    {!loggedIn && 
                         <>
                         <li className='nav-item'>
                             <Link to='/choose-users'>
@@ -32,13 +36,13 @@ function Navbar(props) {
                         </li>
                         <li className='nav-item'>|</li>
                         <li className='nav-item'>
-                                <a href="http://localhost:3001/login">Login</a>
+                                <SpotifyLoginButton />
                         </li>
                         </>
                     }
 
                     {/* Navbar if user is logged in */}
-                    {isLoggedin && 
+                    {loggedIn && 
                         <>
                         <li className='nav-item'>
                             {/* REPLACE With user Profile Picture */}

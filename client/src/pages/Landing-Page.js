@@ -1,19 +1,18 @@
 import React from 'react'
-import Navbar from './Navbar';
+import { Link } from 'react-router-dom';
 import '../index.css';
 
 // Main Content area for landing page
 function LandingPage() {
     return(
         <>
-        <Navbar isLoggedin={false}/>
         {/* Header Section */}
         <section className="landing-main">
             <h1>Playlist Composer</h1>
             <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
                 nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore 
                 eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
-        
+            <Link to={"/choose-users"} >Select Users</Link>
         </section>
 
         <div className="spacer layer1"></div>
@@ -44,5 +43,4 @@ function LandingPage() {
     ) 
 }
 
-export default LandingPage
-
+export default LandingPage;

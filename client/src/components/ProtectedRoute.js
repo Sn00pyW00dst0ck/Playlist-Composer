@@ -1,15 +1,17 @@
-import React from 'react'
-import SelectUsers from './Select-Users-Page';
-import {Navigate, Outlet} from 'react-router-dom'
+import React from 'react';
+import {Navigate, Outlet} from 'react-router-dom';
 
-// CHANGE To API call to verify login
-function useAuth() {
-    return true;
-}
-// Calls useAuth function to verify login, redirects to spotify login otherwise
-function ProtectedRoute () {
-    const auth = useAuth();
-    return auth ? <Outlet /> : window.location.replace('http://localhost:3001/login');
+/* 
+    Given an authentication state, will redirect to login page if not authenticated
+*/
+function ProtectedRoute({ auth }) {
+    //If the user is not logged in we show the login with spotify route
+    if (!auth)  {
+        return <Navigate to={"/login"} />
+    }
+
+    //Show the children
+    return <Outlet />;
 }
 
-export default ProtectedRoute
+export default ProtectedRoute;

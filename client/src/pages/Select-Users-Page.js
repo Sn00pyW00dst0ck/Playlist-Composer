@@ -1,16 +1,13 @@
 import React from 'react'
-import Navbar from './Navbar'
 
 // FILLER ADD SEARCH BAR AND CREATE SEPARATE CSS FILE FOR IT
 function SelectUsersPage() {
     return(
         <>
-        <Navbar isLoggedin={true} />
 
         {/* Main Content */}
         <section className="landing-main">
             <h1>Select Other Users To Customize Playlist For</h1>
-
         </section>
         
         </>
