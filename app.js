@@ -6,7 +6,7 @@ const SpotifyAPI = require('./spotify-api');
 require('dotenv').config();
 
 //Setup the Port and express
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 4000;
 const APP = express();
 
 APP.use(express.static(path.join(__dirname, 'Public')));
@@ -22,7 +22,7 @@ APP.get("/api", (req, res) => {
 --------------------------------------------------------------------------------*/
 
 
-
+ 
 /*--------------------------------------------------------------------------------
    Spotify Credentials 
 --------------------------------------------------------------------------------*/
@@ -90,7 +90,7 @@ APP.get("/login/callback", async (req, res) =>  {
     console.log();
 
     //Redirect the user to the next webpage
-    res.redirect("http://localhost/3000/LoggedIn");
+    res.redirect("http://localhost/4000/LoggedIn");
 });
 
 /*
