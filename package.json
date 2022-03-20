@@ -13,7 +13,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+<<<<<<< HEAD
     "concurrently": "^7.0.0",
+=======
+    "cors": "^2.8.5",
+>>>>>>> 877a04d4839248c051604a6c43427bda30897176
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "node-fetch": "^2.6.7",
@@ -21,7 +25,13 @@
     "react-scripts": "^5.0.0",
     "request": "^2.88.2"
   },
+<<<<<<< HEAD
   "devDependencies": {
     "nodemon": "^2.0.15"
+=======
+  "engines": {
+    "npm": ">=6.14.14",
+    "node": ">=14.17.4"
+>>>>>>> 877a04d4839248c051604a6c43427bda30897176
   }
 }

@@ -25,6 +25,8 @@ class SpotifyAPI  {
         this.access_token = null;
         this.refresh_token = null;
         this.expires_in = null;
+
+        this.loggedIn = false;
     };
 
     /**
@@ -70,8 +72,15 @@ class SpotifyAPI  {
             json: true, 
             body: params
         });
+        
+        //Handle an error
+        if (response.status != 200)  {
+            console.log("ERROR");
+            console.log(response);
+            return false;
+        }
 
-        const data = await response.json();
+        const data = response.json();
 
         //Set the access_token, refresh_token, and expires in
         this.access_token = data.access_token;
@@ -79,7 +88,9 @@ class SpotifyAPI  {
         this.expires_in = data.expires_in;
 
         //Setup the refresh token to work automatically using a JavaScript interval
-        this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in));
+        this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in) * 1000);
+        this.loggedIn = true;
+        return true;
     }
 
     /**
@@ -105,12 +116,40 @@ class SpotifyAPI  {
 
         const data = await response.json();
 
+        //Update the access token and expires in
         this.access_token = data.access_token;
-        this.expires_in = data.expires_in;
+        if (data.expires_in != this.expires_in)  {
+            //If the expires in changed we need to update the refresh interval
+            clearInterval(this.refresh_timeout);
+            this.expires_in = data.expires_in;
+            this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in) * 1000);
+        }
+        
+        console.log("SpotifyAPI access token was refreshed");
+    }
 
-        //Setup the next automatic call... (Maybe set timeout would work better here...)
+    /**
+     * Deletes the SpotifyAPI object's access tokens.
+     * Effectively logs out the user from our application.
+     */
+    deleteAccessTokens()  {
+        this.access_token = null;
+        this.refresh_token = null;
+        this.expires_in = null;
+
         clearInterval(this.refresh_timeout);
-        this.refresh_timeout = setInterval(() => this.refreshAccessToken(), (this.expires_in));
+        this.loggedIn = false;
+    }
+/*--------------------------------------------------------------------------------
+    Authentication Verification Methods
+--------------------------------------------------------------------------------*/
+
+    /**
+     * 
+     * @returns boolean true if object are logged in to Spotify and false otherwise
+     */
+    isLoggedIn()  {
+        return this.loggedIn;
     }
 
 /*--------------------------------------------------------------------------------
