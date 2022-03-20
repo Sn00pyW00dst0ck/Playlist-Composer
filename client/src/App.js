@@ -6,7 +6,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import SpotifyLoginButton from './components/SpotifyLoginButton';
 import Navbar from './components/Navbar';
 import useAuth from './customHooks/useAuth';
+import useFetch from './customHooks/useFetch';
 
+//Imports for the React Webpage Routing
 import {
     BrowserRouter as Router,
     Routes,
@@ -20,11 +22,22 @@ function App()  {
     const auth = useAuth(code); // state for our app that tells if backend is logged in to spotify
     console.log("APP AUTH: " + auth);
 
+    const {isLoading, responseData, fetchError} = useFetch("/api");
+
     return (
         <>
 
             <Router>
                 <Navbar auth={auth}/> {/* Pass authentication state to the navbar component */}
+
+                {/* Testing for the useFetch Hook */}
+                {isLoading && <span>Loading.....</span>}
+                {!isLoading && fetchError ? (
+                  <span>Error in fetching data ...</span>
+                ) : (
+                  <span>{JSON.stringify(responseData)}</span>
+                )}
+
 
                 <Routes>
                     {/* PUBLIC Landing Page */}
@@ -48,6 +61,8 @@ function App()  {
                     </Route>
 
                 </Routes>
+
+                
             </Router>
         </>
     );

@@ -37,11 +37,6 @@ APP.get("/api/logged-in", (req, res) =>  {
     res.json({loggedIn: SpotifyAPIObject.isLoggedIn()})
 });
 
-APP.post("/api/Logout", (req, res) =>  {
-    SpotifyAPIObject.deleteAccessTokens();
-    res.send(200, {"result" : "Logged Out!"});
-});
-
 APP.get("/api/current-user", async (req, res) =>  {
     const user = await SpotifyAPIObject.getCurrentUserProfile();
     if (user.status == 401)  { 
@@ -69,7 +64,6 @@ APP.get("/login", (req, res) =>  {
 */
 
 
-
 APP.post("/login", async (req, res) =>  {
     //Check we have a code in our request body, if we don't return false
     const code = req.body.code;
@@ -93,7 +87,8 @@ APP.post("/login", async (req, res) =>  {
 });
 
 APP.post("/logout", async (req, res) =>  {
-
+    SpotifyAPIObject.deleteAccessTokens();
+    res.json({loggedOut: true});
 });
 
 //THIS CALLBACK WILL PROBABLY BE REMOVED OR HEAVILY CHANGED
@@ -143,6 +138,7 @@ APP.get("/login/callback", async (req, res) =>  {
    res.sendStatus(200);
 });
 */
+
 /*--------------------------------------------------------------------------------
    Setup Server Listening On Port
 --------------------------------------------------------------------------------*/

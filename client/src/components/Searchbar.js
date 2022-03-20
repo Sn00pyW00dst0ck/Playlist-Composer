@@ -6,7 +6,7 @@ function Searchbar () {
     return (
         <div className="search-bar"><input type="text" placeholder="Search..." onChange={event => {setSearchTerm(event.target.value)}} /></div>
 
-    )
+    );
 }
 
 export default Searchbar;

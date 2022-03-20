@@ -12,7 +12,6 @@ export default function useAuth(code) {
         })
         .then(res => res.json())
         .then(data => {
-            console.log(data);
             setLoggedIn(data.result);
             // If success then cut the code string from the URL and execute the other thing
             window.history.pushState({}, null, "/");
