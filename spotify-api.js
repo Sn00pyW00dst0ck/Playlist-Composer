@@ -80,7 +80,7 @@ class SpotifyAPI  {
             return false;
         }
 
-        const data = await response.json();
+        const data = response.json();
 
         //Set the access_token, refresh_token, and expires in
         this.access_token = data.access_token;
