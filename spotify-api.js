@@ -72,7 +72,7 @@ class SpotifyAPI  {
             json: true, 
             body: params
         });
-
+        
         //Handle an error
         if (response.status != 200)  {
             console.log("ERROR");

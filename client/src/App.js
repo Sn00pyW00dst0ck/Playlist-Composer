@@ -42,7 +42,7 @@ function App()  {
                 <Routes>
                     {/* PUBLIC Landing Page */}
                     <Route path="/" element={
-                        <LandingPage />
+                        <LandingPage auth={auth} />
                     } />
 
                     {/* 
@@ -62,7 +62,7 @@ function App()  {
 
                 </Routes>
 
-                
+
             </Router>
         </>
     );

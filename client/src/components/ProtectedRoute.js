@@ -7,7 +7,7 @@ import {Navigate, Outlet} from 'react-router-dom';
 function ProtectedRoute({ auth }) {
     //If the user is not logged in we show the login with spotify route
     if (!auth)  {
-        return <Navigate to={"/login"} />
+        return <Navigate to={"/"} />
     }
 
     //Show the children
