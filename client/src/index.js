@@ -1,17 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import Button from './components/Button'
+import App from './App'
 import reportWebVitals from './reportWebVitals';
 
+//Added Router and Routes for multi-page stuff. 
 ReactDOM.render(
   <React.StrictMode>
-    <a href="http://localhost:3001/login">Click Me</a>
-    <Button />
-    <App />
-    <App />
-    <Button />
     <App />
   </React.StrictMode>,
   document.getElementById('root')
