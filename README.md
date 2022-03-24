@@ -1,8 +1,8 @@
 # Playlist Creator
 
-[![Build Status]()
+**Build Status: `In Development`**
 
-** By Gabriel Aldous, Gabriel Aldous, Alan Patrick Lapid, and Xian Jian Zhang **
+**By Gabriel Aldous, Gabriel Aldous, Alan Patrick Lapid, and Xian Jian Zhang**
 
 Playlist Creator is a React and Node.js based web application designed to
 simplify the process of creating Spotify playlists tailored for multiple
@@ -10,7 +10,19 @@ users.
 
 ## Setting Up
 
-To set up the development environment on your computer, ensure that Node.js is installed.
+To set up the development environment on your computer:
+1. Clone the repository
+2. Ensure that Node.js and Node Package Manager are installed
+3. Run `npm i` in both the root and client directories (this ensures dependencies are up to date)
+4. Run `npm start` from the root directory to run the development server
+
+## Immediate Next Development steps
+
+1. Create React Text Input Component for the selecting playlist users page
+2. Create two data structures for the project implementation (unordered map and one other type)
+3. Implement the functionality of ranking songs based on number of appearances in users liked playlists
+4. Implement server routes for getting the newly formed playlist information
+5. Implement React front end component for displaying this information
 
 ## Planned Features
 
