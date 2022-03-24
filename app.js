@@ -45,6 +45,22 @@ APP.get("/api/current-user", async (req, res) =>  {
     res.status(200).json(user)
 });
 
+APP.get("/api/create-playlist", async (req, res) =>  {
+    //The request body should supply the 5 users to create playlist for
+
+    //Use some variation of Promise.all() to batch the calls to Spotify and save time???
+    //Or just call one at a time IDK what would be better
+
+    //We need to make requests for users playlists, then songs on those playlists...
+
+    //Then we use our data structure to prioritize the songs based on how many appearences each song has
+
+    //Then we put sort based on priority and take top X songs (maybe top 50 songs ??)
+    //Store those top X songs in a variable (another route in server can handle telling spotify to make the actual playlist)
+
+    //Then we put our top X songs in the response body and REACT will display that based on components we make...    
+});
+
 /*--------------------------------------------------------------------------------
    Spotify Credentials 
 --------------------------------------------------------------------------------*/
