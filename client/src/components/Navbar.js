@@ -1,6 +1,6 @@
 import React, {useState} from 'react'
 import { Link } from 'react-router-dom'
-import './Navbar.css'
+import styles from './Navbar.module.css'
 
 import SpotifyLoginButton from './SpotifyLoginButton';
 
@@ -14,27 +14,27 @@ function Navbar({auth}) {
     const loggedIn = auth; 
 
     return(
-        <nav className='navbar'>
-            <div className='navbar-container'>
+        <nav className={styles.navbar}>
+            <div className={styles.navbarContainer}>
 
                 {/* replace with app logo in future, remove route in future */}
-                <Link to='/' className='navbar-logo'>
+                <Link to='/' className={styles.navbarLogo}>
                     Playlist Composer
                 </Link>
 
                 {/* Navbar Items */}
-                <ul className='nav-menu'>
+                <ul className={styles.navMenu}>
                 
                     {/* Navbar if user is logged out */}
                     {!loggedIn && 
                         <>
-                        <li className='nav-item'>
+                        <li className={styles.navItem}>
                             <Link to='/choose-users'>
                                 Create
                             </Link>
                         </li>
-                        <li className='nav-item'>|</li>
-                        <li className='nav-item'>
+                        <li className={styles.navItem}>|</li>
+                        <li className={styles.navItem}>
                             <SpotifyLoginButton />
                         </li>
                         </>
@@ -43,14 +43,14 @@ function Navbar({auth}) {
                     {/* Navbar if user is logged in */}
                     {loggedIn && 
                         <>
-                        <li className='nav-item'>
+                        <li className={styles.navItem}>
                             {/* REPLACE With user Profile Picture */}
-                            <img className="profile-pic" src="http://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"/>
+                            <img className={styles.profilePic} src="http://assets.stickpng.com/images/585e4bf3cb11b227491c339a.png"/>
                         </li>
-                        <li className='nav-item'>|</li>
-                        <li className='nav-item'>
-                                {/* REPLACE WITH Node Path or maybe component */}
-                                <a href="https://www.spotify.com/logout/">Logout</a>
+                        <li className={styles.navItem}>|</li>
+                        <li className={styles.navItem}>
+                            {/* REPLACE WITH Node Path or maybe component */}
+                            <a href="https://www.spotify.com/logout/">Logout</a>
                         </li>
                         </>
                     }

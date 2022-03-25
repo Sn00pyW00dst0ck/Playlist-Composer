@@ -1,11 +1,11 @@
-.navbar-container {
+.navbarContainer {
   display: flex;
   justify-content: space-around;
   align-items: center;
   min-height: 8vh;
 }
 
-.navbar-logo {
+.navbarLogo {
   text-transform: uppercase;
   letter-spacing: 5px;
   text-decoration: none;
@@ -13,18 +13,18 @@
   color: white;
 }
 
-.nav-menu {
+.navMenu {
   display: flex;
   color: aliceblue;
   justify-content: space-around;
   width: 10%;
 }
 
-.nav-menu li {
+.navMenu li {
   list-style: none;
 }
 
-.nav-item a {
+.navItem a {
   color: white;
   text-decoration: none;
   letter-spacing: 3px;
@@ -32,6 +32,6 @@
   font-size: 14px;
 }
 
-.profile-pic {
+.profilePic {
   width: 15px;
 }
