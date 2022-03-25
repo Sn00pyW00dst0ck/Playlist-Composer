@@ -46,7 +46,7 @@ APP.get("/api/current-user", async (req, res) =>  {
 });
 
 APP.get("/api/create-playlist", async (req, res) =>  {
-    //The request body should supply the 5 users to create playlist for
+    //The request body should supply the (up to) 5 users to create playlist for
 
     //Use some variation of Promise.all() to batch the calls to Spotify and save time???
     //Or just call one at a time IDK what would be better

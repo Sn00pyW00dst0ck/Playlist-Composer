@@ -35,7 +35,7 @@ function Navbar({auth}) {
                         </li>
                         <li className='nav-item'>|</li>
                         <li className='nav-item'>
-                                <SpotifyLoginButton />
+                            <SpotifyLoginButton />
                         </li>
                         </>
                     }
@@ -49,7 +49,7 @@ function Navbar({auth}) {
                         </li>
                         <li className='nav-item'>|</li>
                         <li className='nav-item'>
-                                {/* REPLACE WITH Node Path */}
+                                {/* REPLACE WITH Node Path or maybe component */}
                                 <a href="https://www.spotify.com/logout/">Logout</a>
                         </li>
                         </>

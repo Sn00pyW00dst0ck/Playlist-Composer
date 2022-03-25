@@ -1,0 +1,31 @@
+.SpotifyLoginButtonContainer  {
+    background-color: rgb(0, 169, 111);
+
+    height: 3em;
+    width: 10em;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border: none;
+    border-radius: .5em;
+}
+
+.SpotifyLoginButton  {
+    color: white;
+    background-color: rgb(0, 169, 111);
+
+    font-family: sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+
+    line-height: 2;
+
+    text-decoration: none;
+}
+
+.SpotifyLoginButton:visited  {
+    color: white;
+    text-decoration: none;
+}
