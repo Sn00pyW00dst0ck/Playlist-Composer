@@ -4,25 +4,34 @@
     height: 3em;
     width: 10em;
 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
     border: none;
     border-radius: .5em;
 }
 
 .SpotifyLoginButton  {
+    height: inherit;
+    width: inherit;
+
+    /* Set the colors and the curved border */
     color: white;
     background-color: rgb(0, 169, 111);
+    border: none;
+    border-radius: 0.5em;
+
+    /* An old CSS text centering trick for <a> tags I've been using for a while */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    
+    /* Text Properties */
+    line-height: 2;
+    letter-spacing: normal !important;
+    text-decoration: none;
 
     font-family: sans-serif;
     font-size: 14px;
     font-weight: bold;
-
-    line-height: 2;
-
-    text-decoration: none;
 }
 
 .SpotifyLoginButton:visited  {
