@@ -1,6 +1,6 @@
 import useFetch from '../customHooks/useFetch';
 import React, {useState} from 'react'
-import "./Searchbar.css"
+import styles from "./Searchbar.module.css"
 
 function Searchbar ({setUsers}) {
     function onUpdate(event) {
