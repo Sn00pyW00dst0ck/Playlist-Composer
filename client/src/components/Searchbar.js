@@ -3,13 +3,15 @@ import React, {useState} from 'react'
 import styles from "./Searchbar.module.css"
 
 function Searchbar ({setUsers}) {
-    function onUpdate(event) {
+    function onUpdate(event) { 
         event.preventDefault()
     }
     return (
+        <>
         <div className="search-bar">
-            <input type="text" placeholder="Enter a username"/>
+            <input type="text" onChange={e => setUsers(e.target.value)} placeholder="Enter a username"/>
         </div>
+        </>
     );
 }
 
