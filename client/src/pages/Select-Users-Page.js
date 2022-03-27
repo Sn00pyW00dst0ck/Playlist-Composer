@@ -1,18 +1,14 @@
 import React from 'react'
-import {useState, useCallback} from 'react'
+import {useState} from 'react'
 import useFetch from '../customHooks/useFetch';
 import Searchbar from '../components/Searchbar'
 
 // FILLER ADD SEARCH BAR AND CREATE SEPARATE CSS FILE FOR IT
 function SelectUsersPage() {
     const [users, setUsers] = useState([]);
-    console.log(users);
     const [options, setOptions] = useState(null);
-    console.log(options);
     const {isLoading, responseData, fetchError} = useFetch("/api/create-playlist", options);
-    console.log(isLoading);
-    console.log(responseData);
-    console.log(fetchError);
+
     return(
         <>
         /*
@@ -25,17 +21,18 @@ function SelectUsersPage() {
         <section className="landing-main">
             <h1>Select Other Users To Customize Playlist For</h1>
             
-                <Searchbar setUsers={setUsers} />
-                <Searchbar setUsers={setUsers} />
-                <Searchbar setUsers={setUsers} />
-                <Searchbar setUsers={setUsers} />
+                <Searchbar users={users} setUsers={setUsers} />
+                <Searchbar users={users} setUsers={setUsers} />
+                <Searchbar users={users} setUsers={setUsers} />
+                <Searchbar users={users} setUsers={setUsers} />
 
                 <button onClick={() => setOptions({
                     method: "POST",
                     headers:  {
                         'Content-Type': 'application/json'
                     },
-                    body: users
+                    body: JSON.stringify({user:users})
+        
                 })}>Submit</button>
         
                 
