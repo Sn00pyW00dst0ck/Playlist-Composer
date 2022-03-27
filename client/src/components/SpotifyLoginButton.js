@@ -16,8 +16,8 @@ const authURL = `${authEndpoint}?client_id=${clientId}&response_type=code&redire
 
 function SpotifyLoginButton()  {
     return (
-        <div class={styles.SpotifyLoginButtonContainer}>
-            <a class={styles.SpotifyLoginButton} href={authURL}>LOGIN WITH SPOTIFY</a>
+        <div className={styles.SpotifyLoginButtonContainer}>
+            <a className={styles.SpotifyLoginButton} href={authURL}>LOGIN WITH SPOTIFY</a>
         </div>
     );
 }

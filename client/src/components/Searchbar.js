@@ -1,11 +1,15 @@
+import useFetch from '../customHooks/useFetch';
 import React, {useState} from 'react'
 import "./Searchbar.css"
 
-function Searchbar () {
-    const [searchTerm, setSearchTerm] = useState('')
+function Searchbar ({setUsers}) {
+    function onUpdate(event) {
+        event.preventDefault()
+    }
     return (
-        <div className="search-bar"><input type="text" placeholder="Search..." onChange={event => {setSearchTerm(event.target.value)}} /></div>
-
+        <div className="search-bar">
+            <input type="text" placeholder="Enter a username"/>
+        </div>
     );
 }
 
