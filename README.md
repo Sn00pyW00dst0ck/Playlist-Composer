@@ -20,8 +20,24 @@ To set up the development environment on your computer:
 
 ## Immediate Next Development steps
 
-1. Create React Text Input Component for the selecting playlist users page
+1. Finalize React Text Input Component for the selecting playlist users page
 2. Create two data structures for the project implementation (unordered map and one other type)
+    - Unordered Map data structure
+        - Look at stepik Q 10.2.1 but instead of set its a map
+        - Create Hash Function
+        - Create Reduce Function - Converts hash function down to table size
+        - Key will be a Spotify Song ID (A really long base 62 string)
+        - Value will be an integer representing the track's priority (aka # of duplicates)
+        - Collision by <?> Whatever you guys think is better...
+        - MOST IMPORTANT FUNCTION: We need a function that loops through the array of the map and returns the keys for the top X priority values. Should recieve an integer value, Should return an array of strings
+    
+    - AVL tree
+        - Spotify Song ID and a number priority (initially 0) in each node
+        - We will insert Spotify Song ID, if it is a duplicate then increment priority
+        - Traversal through the tree and create an array with Spotify Song ID ordered by priority value. Should return an array of Spotify Song IDs ordered by their priority (least to greatest). <- Last
+        - 
+            
+
 3. Implement the functionality of ranking songs based on number of appearances in users liked playlists
 4. Implement server routes for getting the newly formed playlist information
 5. Implement React front end component for displaying this information
