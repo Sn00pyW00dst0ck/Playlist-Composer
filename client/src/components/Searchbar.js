@@ -5,9 +5,9 @@ import styles from "./Searchbar.module.css"
 function Searchbar ({setUser}) {
     return (
         <>
-        <div className="search-bar">
+        <div className={styles.SearchbarContainer}>
             {/** Using JS Spread Operator to append newest item to the array */}
-            <input type="text" onChange={e => setUser(e.target.value)} placeholder="Enter a username"/>
+            <input className={styles.Searchbar} type="text" onChange={e => setUser(e.target.value)} placeholder="Enter A Spotify Username"/>
         </div>
         </>
     );

@@ -29,12 +29,19 @@ function SelectUsersPage() {
         <section className="landing-main">
             <h1>Select Other Users To Customize Playlist For</h1>
             
-            {/* Put 4 Searchbars on the page, with key's 0, 1, 2, and 3, so they each can update one specific name */}
+            <p> 
+                Enter up to 4 other Spotify usernames. 
+                These users will be used to create the 
+                merged playlist. Leave a username blank 
+                if you have fewer than 4 other users to 
+                create a playlist for.
+            </p>
+
+            {/* Put 4 Searchbars on the page, they each can update one specific name */}
             <Searchbar setUser={setUser1} />
             <Searchbar setUser={setUser2} />
             <Searchbar setUser={setUser3} />
             <Searchbar setUser={setUser4} />
-
             
             {/* Button that changes the options for the fetch and triggers the useFetch hook to call our backend */}
             <button onClick={() => {
@@ -51,7 +58,6 @@ function SelectUsersPage() {
                     },
                     body: JSON.stringify({users:users})
                 });
-                
             }}>Submit</button>
         
         </section>
