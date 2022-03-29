@@ -1,5 +1,8 @@
-import useFetch from '../customHooks/useFetch';
-import React, {useState} from 'react'
+/**
+ * File by Gabriel Aldous and Xian Jian Zhang
+ */
+
+import React from 'react'
 import styles from "./Searchbar.module.css"
 
 function Searchbar ({setUser}) {

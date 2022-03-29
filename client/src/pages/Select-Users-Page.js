@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {useState} from 'react'
 import useFetch from '../customHooks/useFetch';
 import Searchbar from '../components/Searchbar'
