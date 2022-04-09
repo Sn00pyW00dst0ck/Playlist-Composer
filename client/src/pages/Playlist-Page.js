@@ -31,8 +31,8 @@ function PlaylistPage()  {
             <p>{user3}</p>
             <p>{user4}</p>
             {isLoading && <p>Loading...</p>} 
-            {!isLoading && fetchError && <p>ERROR!</p>}
-            {!isLoading && <p>Success!</p>} 
+            {!isLoading && fetchError && <p>ERROR! {JSON.stringify(fetchError)}</p>}
+            {!isLoading && <p>Success! {JSON.stringify(responseData)}</p>} 
         </section>  
         </>
     );
