@@ -208,4 +208,4 @@ var arr = tree.generateList();
 
 console.log(arr);
 
-
+module.exports = AVLTree;

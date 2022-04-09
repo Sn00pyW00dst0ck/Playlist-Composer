@@ -107,13 +107,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
         tracksTree.insert(tracks[i].track.id);
     }
 
-    tracksTree.generateList(tracksTree.root);
-    let arr = tracksTree.arr;
-
-    arr.sort((count1, count2) =>  {
-        if (count1.count > count2.count) return -1;
-        if (count1.count < count2.count) return 1;
-    });
+    let arr = tracksTree.generateList();
 
     console.log(arr);
 });
