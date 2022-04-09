@@ -152,26 +152,25 @@ class AVLTree{
 
     }
 
+    populateList(root){
+        if (!root) { return; }
+        if (root.left)  { this.populateList(root.left); }
+        let tempObj = {};
+        tempObj.song = root.id;
+        tempObj.count = root.count;
+        this.arr.push(tempObj);
+        if (root.right)  { this.populateList(root.right); }
+    }
+
     // Populates private member array with alphabetical array containing song name and count
-    generateList(root){
-        
-        if(!root){
-            return;
-        }
-        else{
-            if(root.left){
-                this.generateList(root.left);
-            }
-
-            let tempObj = {};
-            tempObj.song = root.id;
-            tempObj.count = root.count;
-            this.arr.push(tempObj);
-
-            if(root.right){
-                this.generateList(root.right);
-            }
-        }
+    generateList(){
+        this.populateList(this.root);
+        // Sorts array based on count O(n log n)
+        this.arr.sort(function(count1, count2){
+            if(count1.count > count2.count) return -1;
+            if(count1.count < count2.count) return 1;
+        });
+        return this.arr;
     }
 }
 
@@ -205,14 +204,7 @@ tree.insert("Good Morning")
 tree.insert("After Hours")
 
 // Generates Array of Objects from AVL Tree to Sort
-tree.generateList(tree.root);
-var arr = tree.arr;
-
-// Sorts array based on count O(n log n)
-arr.sort(function(count1, count2){
-    if(count1.count > count2.count) return -1;
-    if(count1.count < count2.count) return 1;
-});
+var arr = tree.generateList();
 
 console.log(arr);
 
