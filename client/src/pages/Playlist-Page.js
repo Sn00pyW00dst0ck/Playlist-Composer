@@ -1,13 +1,39 @@
-import React from "react"
+import React, {useState} from "react"
+import { useParams } from "react-router-dom";
+
+import useFetch from "../customHooks/useFetch";
 
 // DUMMY PAGE RIGHT NOW
 function PlaylistPage()  {
+    const {user1, user2, user3, user4 } = useParams();
+
+    let users = [user1, user2, user3, user4].filter((e) =>  {
+        return e != 'null' && e != '' && e != null;
+    });
+    
+    const [options, setOptions] = useState({
+        method: "POST",
+        headers:  {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({users:users})
+    });
+    console.log(options)
+
+    const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);
 
     return (
         <>
         <section className="landing-main">
             <h1>Playlist Preview</h1>
-        </section>
+            <p>{user1}</p>
+            <p>{user2}</p>
+            <p>{user3}</p>
+            <p>{user4}</p>
+            {isLoading && <p>Loading...</p>} 
+            {!isLoading && fetchError && <p>ERROR!</p>}
+            {!isLoading && <p>Success!</p>} 
+        </section>  
         </>
     );
 }

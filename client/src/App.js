@@ -57,7 +57,7 @@ function App()  {
                     {/* Protected Pages (requires user to be logged in) */}
                     <Route element={<ProtectedRoute auth={auth}/>}> {/* Pass authentication state to the protected route component */}
                         <Route path="/choose-users" element={<SelectUsersPage />} />
-                        <Route path="/preview-playlist" element={<PlaylistPage />} />
+                        <Route path="/preview-playlist/:user1/:user2/:user3/:user4" element={<PlaylistPage />} />
                     </Route>
 
                 </Routes>
