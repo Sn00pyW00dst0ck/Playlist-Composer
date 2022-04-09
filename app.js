@@ -101,6 +101,25 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     }
     console.log("Tracks Count: " + tracks.length);
 
+    let tracksMap = new CustomMap();
+    for (let i = 0; i < tracks.length; i++)  {
+        tracksMap.insert(tracks[i].track.id);
+    }
+    let arr = tracksMap.getsTop(50);
+    console.log(arr);
+
+    let currentUser = await SpotifyAPIObject.getCurrentUserProfile();
+    console.log(currentUser);
+    let snapshot = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
+    console.log(snapshot);
+    let uris = [];
+    for (let i = 0; i < arr.length; i++)  {
+        uris.push("spotify:track:" + arr[i].data[0]);
+    }
+    let response = await SpotifyAPIObject.addItemsToPlaylist(snapshot.id, uris);
+    console.log(response);
+
+    /*
     let tracksTree = new CustomTree();
 
     for (let i = 0; i < tracks.length; i++)  {
@@ -110,6 +129,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     let arr = tracksTree.generateList();
 
     console.log(arr);
+    */
 });
 
 

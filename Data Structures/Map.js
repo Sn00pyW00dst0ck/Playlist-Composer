@@ -269,4 +269,4 @@ for (let x = 0; x < arr.length; x++) {
     console.log(arr[x].first() + " " + arr[x].second());
 }
 
-//module.exports = Map;
+module.exports = Map;
