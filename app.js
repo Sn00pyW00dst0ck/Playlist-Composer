@@ -1,3 +1,4 @@
+//Imports
 const express = require('express');
 const res = require('express/lib/response');
 const path = require('path');
@@ -23,20 +24,21 @@ APP.get("/api", (req, res) => {
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || null;
 const CLIENT_SECRET = process.env.SPOTIFY_CLIENT_SECRET || null;
 const REDIRECT_URI = "http://localhost:3000/";
+const SCOPES = "user-read-private user-library-read user-top-read playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public";
 
 //An object to be used for easy Spotify api calls
 let SpotifyAPIObject = new SpotifyAPI(CLIENT_ID, CLIENT_SECRET);
-const SCOPES = "user-read-private user-library-read user-top-read playlist-modify-private playlist-read-collaborative playlist-read-private playlist-modify-public";
-
 
 /*--------------------------------------------------------------------------------
    React Interaction API
 --------------------------------------------------------------------------------*/
 
+//Get boolean to check if user is logged in
 APP.get("/api/logged-in", (req, res) =>  {
     res.json({loggedIn: SpotifyAPIObject.isLoggedIn()})
 });
 
+//Get information on the current user
 APP.get("/api/current-user", async (req, res) =>  {
     const user = await SpotifyAPIObject.getCurrentUserProfile();
     if (user.status == 401)  { 
@@ -45,41 +47,68 @@ APP.get("/api/current-user", async (req, res) =>  {
     res.status(200).json(user)
 });
 
+//SOME HELPER FUNCTIONS BELOW!
+
+//Move this to Spofity API object???
+const getPlaylistData = async (users) => {
+    //Make all the requests to Spotify for user playlists
+    let promiseArray = [];
+    promiseArray.push(SpotifyAPIObject.getCurrentUserPlaylists());
+    for (let i = 0; i < users.length; i++)  {
+        promiseArray.push(SpotifyAPIObject.getUserPlaylists(users[i]));
+    }
+    const responses = await Promise.all(promiseArray);
+
+    //Extract the playlistData into one array
+    let playlistData = [];
+    for (let i = 0; i < responses.length; i++)  {
+        playlistData = [...playlistData, ...responses[i].items];
+    }
+    return playlistData;
+}
+
+//Move this to Spotify API object???
+const getTracksOfManyPlaylists = async (playlists) =>  {
+    //Make all the requests to Spotify for user playlists
+    let promiseArray = [];
+    for (let i = 0; i < playlists.length; i++)  {
+        promiseArray.push(SpotifyAPIObject.getPlaylistItems(playlists[i].id));
+    }
+    const responses = await Promise.all(promiseArray);
+
+    //Extract the playlistData into one array
+    let tracksData = [];
+    for (let i = 0; i < responses.length; i++)  {
+        tracksData = [...tracksData, ...responses[i].items];
+    }
+    return tracksData;
+}
+
 APP.post("/api/create-playlist", async (req, res) =>  {
-    console.log(req.body);
     //The request body should supply the (up to) 5 users to create playlist for
     console.log("Creating playlist");
-    //Use some variation of Promise.all() to batch the calls to Spotify and save time???
-    //Or just call one at a time IDK what would be better
+    console.log(req.body);
 
-    //We need to make requests for users playlists, then songs on those playlists...
+    //Requests for playlists and tracks data
+    let playlists = await getPlaylistData(req.body.users);
+    let tracks = await getTracksOfManyPlaylists(playlists);
 
-    //Then we use our data structure to prioritize the songs based on how many appearences each song has
+    //Some printing of the track IDs. This will be replaced with using data structures to prioritize tracks.
+    for (let i = 0; i < tracks.length; i++)  {
+        console.log(tracks[i].track.id);
+    }
+    console.log("Tracks Count: " + tracks.length);
 
-    //Then we put sort based on priority and take top X songs (maybe top 50 songs ??)
-    //Store those top X songs in a variable (another route in server can handle telling spotify to make the actual playlist)
+    //We use our data structure to prioritize the songs based on how many appearences each song has
 
-    //Then we put our top X songs in the response body and REACT will display that based on components we make...    
+    //Extract the top X songs and put them in a variable
+    
+    //Give the React fontend a response with the song information
 });
  
 /*--------------------------------------------------------------------------------
    Spotify Credentials 
 --------------------------------------------------------------------------------*/
-
-//THIS GET WILL SOON BE REDUNDANT AND REMOVED
-/*
-APP.get("/login", (req, res) =>  {
-    //This code will be replaced with spotify-api object later. This is for testing...
-    let params = new URLSearchParams();
-    params.append("response_type", "code");
-    params.append("client_id", CLIENT_ID);
-    params.append("scope", SCOPES);
-    params.append("redirect_uri", REDIRECT_URI);
-    //Redirect the user to the Spotify Login Page
-    res.redirect("https://accounts.spotify.com/authorize?" + params.toString());
-});
-*/
-
 
 APP.post("/login", async (req, res) =>  {
     //Check we have a code in our request body, if we don't return false
@@ -107,54 +136,6 @@ APP.post("/logout", async (req, res) =>  {
     SpotifyAPIObject.deleteAccessTokens();
     res.json({loggedOut: true});
 });
-
-//THIS CALLBACK WILL PROBABLY BE REMOVED OR HEAVILY CHANGED
-/*
-APP.get("/login/callback", async (req, res) =>  {
-    //This code will be replaced with spotify-api object later. This is for testing...
-    let code = req.query.code || null;
-    let state = req.query.state || null;
-    
-    //----- Lets make some requests using the Spotify API object -----//
-
-    //This line has the object get the access token for making spotify api calls
-    await SpotifyAPIObject.generateAccessToken(code, REDIRECT_URI);
-    console.log("SPOTIFY-API-OBJECT LOGGED IN!");
-    
-    /*
-    //Let's print songs from a playlist belonging to the current user...
-    console.log("Songs belonging to a playlist of current user: ");
-    let lists = await SpotifyAPIObject.getCurrentUserPlaylists();
-    let tracks = await SpotifyAPIObject.getPlaylistItems(lists.items[0].id);
-    for (let i = 0; i < tracks.items.length; i++)  {
-        console.log(tracks.items[i].track.name + ", " +  tracks.items[i].track.id);
-    }
-    console.log();
-    //Let's Print the Current Users Top Tracks...
-    console.log("Current User Top Tracks: ")
-    let artists = await SpotifyAPIObject.getCurrentUserTopItems("tracks");
-    for (let i = 0; i < artists.items.length; i++)  {
-        console.log(artists.items[i].name);
-    }
-    console.log();
-    //Let's print another user's public information...
-    let other = await SpotifyAPIObject.getUserProfile("apml.trickster");
-    console.log("OTHER USER PROFILE:");
-    console.log(other);
-    console.log();
-    //Let's print some songs from a playlist belonging to that other user...
-    console.log("Songs from one of the other users playlists:");
-    let othersPlaylist = await SpotifyAPIObject.getUserPlaylists("apml.trickster");
-    let othersPlaylistTracks = await SpotifyAPIObject.getPlaylistItems(othersPlaylist.items[0].id);
-    for (let i = 0; i < othersPlaylistTracks.items.length; i++)  {
-        console.log(othersPlaylistTracks.items[i].track.name + ", " +  othersPlaylistTracks.items[i].track.id);
-    }
-    console.log();
-    /
-
-   res.sendStatus(200);
-});
-*/
 
 /*--------------------------------------------------------------------------------
    Setup Server Listening On Port
