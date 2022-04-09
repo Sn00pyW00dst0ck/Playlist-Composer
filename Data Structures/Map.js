@@ -7,7 +7,7 @@ class Node {
      * @param {string} key the key 
      * @param {any data type or object} value the value
      */
-    constructor(key, value) {
+    constructor(key, value=0) {
         this.data=[key, value];
     }
 
@@ -25,6 +25,18 @@ class Node {
      */
     second() {
         return this.data[1];
+    }
+
+    /**
+     * 
+     * @param {int} value, adds the inserted value (if any), one by default 
+     */
+    setSecond(value) {
+        if (value == 0) {
+            value = 1
+        }
+        this.data[1] = this.data[1] + value;
+        console.log("Updated: " + this.data[0] + " with " + this.second());
     }
 }
 
@@ -68,7 +80,7 @@ class Map  {
      * @param {String} key key
      * @param {integer} value value 
      */
-    insert(key, value) {
+    insert(key, value=0) {
         let dataPoint = new Node(key, value);
         let index = this.Hashing(key);
         //Check if there's collision
@@ -76,30 +88,36 @@ class Map  {
             this.allData[index] = new Node(key, value);
             this.currSize++;
         } else {
-
-            //While not placed, keep probing, we starting with zero
-            //To check if values are the same
             let placed = false;
-            let counter = 0;
-            while (placed == false) {
-                index += counter * counter;
+            if (this.allData[index].first() == key) {
+                this.allData[index].setSecond(value);
+                placed = true;
 
-                //Wrapping around the array
-                index = index % this.maxCap; 
+            } else {
 
-                //Founding an empty spot
-                if (typeof this.allData[index] === 'undefined') {
-                    this.allData[index] = new Node(key, value);
-                    placed = true;
-                    this.currSize++;
-                } else {
+                //While not placed, keep probing, we starting with zero
+                //To check if values are the same
+                let counter = 0;
+                while (placed == false) {
+                    index += counter * counter;
 
-                    //If the same value encountered, just replace it
-                    if (this.allData[index].first() == key) {
+                    //Wrapping around the array
+                    index = index % this.maxCap; 
+
+                    //Founding an empty spot
+                    if (typeof this.allData[index] === 'undefined') {
                         this.allData[index] = new Node(key, value);
                         placed = true;
+                        this.currSize++;
+                    } else {
+
+                        //If the same value encountered, add to second
+                        if (this.allData[index].first() == key) {
+                            this.allData[index].setSecond();
+                            placed = true;
+                        }
+                        counter++;
                     }
-                    counter++;
                 }
             }
         }
@@ -229,17 +247,21 @@ class Map  {
 }
 
 let map1 = new Map();
-map1.insert("baby", 0);
+map1.insert("baby");
 map1.insert("bacy", 20);
 map1.insert("beby", 40); 
-map1.insert("babie", 0);
-map1.insert("bavi", 0);
-map1.insert("bay", 0);
-map1.insert("bcy", 0);
-map1.insert("beb", 0);
-map1.insert("bbi", 0);
+map1.insert("babie");
+map1.insert("bavi");
+map1.insert("bay");
+map1.insert("bcy");
+map1.insert("beb");
+map1.insert("bbi");
+map1.insert("bbi");
 map1.insert("bba", 10)
 map1.insert("bi", 11);
+map1.insert("bay");
+map1.insert("bcy");
+map1.insert("beb", 5);
 
 let arr = map1.getsTop(map1.getCurrSize());
 
