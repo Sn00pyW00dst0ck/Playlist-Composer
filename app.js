@@ -4,6 +4,8 @@ const res = require('express/lib/response');
 const path = require('path');
 const { URLSearchParams } = require('url');
 const SpotifyAPI = require('./spotify-api');
+const CustomMap = require('./Data Structures/Map');
+const CustomTree = require("./Data Structures/AVLTree");
 const cors = require('cors');
 require('dotenv').config();
 
@@ -99,12 +101,24 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     }
     console.log("Tracks Count: " + tracks.length);
 
-    //We use our data structure to prioritize the songs based on how many appearences each song has
+    let tracksTree = new CustomTree();
 
-    //Extract the top X songs and put them in a variable
-    
-    //Give the React fontend a response with the song information
+    for (let i = 0; i < tracks.length; i++)  {
+        tracksTree.insert(tracks[i].track.id);
+    }
+
+    tracksTree.generateList(tracksTree.root);
+    let arr = tracksTree.arr;
+
+    arr.sort((count1, count2) =>  {
+        if (count1.count > count2.count) return -1;
+        if (count1.count < count2.count) return 1;
+    });
+
+    console.log(arr);
 });
+
+
  
 /*--------------------------------------------------------------------------------
    Spotify Credentials 
