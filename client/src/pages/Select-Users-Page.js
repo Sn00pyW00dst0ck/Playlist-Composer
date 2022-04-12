@@ -1,10 +1,9 @@
 import React from 'react'
 import {useState} from 'react'
-import useFetch from '../customHooks/useFetch';
 import Searchbar from '../components/Searchbar'
 import { Link } from 'react-router-dom';
 
-// FILLER ADD SEARCH BAR AND CREATE SEPARATE CSS FILE FOR IT
+
 function SelectUsersPage() {
 
     //A use state for each user
@@ -12,17 +11,6 @@ function SelectUsersPage() {
     const [user2, setUser2] = useState(null);
     const [user3, setUser3] = useState(null);
     const [user4, setUser4] = useState(null);
-
-    //The options for the fetch request and the actual fetch hook
-    const [options, setOptions] = useState(null);
-    const {isLoading, responseData, fetchError} = useFetch("/api/create-playlist", options);
-    
-    /*
-    Optional console log statements for debugging in browser
-    console.log(isLoading);
-    console.log(responseData);
-    console.log(fetchError);
-    */
 
     return(
         <>

@@ -3,12 +3,11 @@ import { useParams } from "react-router-dom";
 
 import useFetch from "../customHooks/useFetch";
 
-// DUMMY PAGE RIGHT NOW
 function PlaylistPage()  {
     const {user1, user2, user3, user4 } = useParams();
 
     let users = [user1, user2, user3, user4].filter((e) =>  {
-        return e != 'null' && e != '' && e != null;
+        return e !== 'null' && e !== '' && e !== null;
     });
     
     const [options, setOptions] = useState({
