@@ -29,12 +29,6 @@ function Navbar({auth}) {
                     {!loggedIn && 
                         <>
                         <li className={styles.navItem}>
-                            <Link to='/choose-users'>
-                                Create
-                            </Link>
-                        </li>
-                        <li className={styles.navItem}>|</li>
-                        <li className={styles.navItem}>
                             <SpotifyLoginButton />
                         </li>
                         </>

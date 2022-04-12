@@ -773,7 +773,7 @@ class SpotifyAPI  {
      */
     async addItemsToPlaylist(playlist_id, uris)  {
         let fetchOptions = this.#basicSpotifyFetchOptions("POST");
-        fetchOptions.body = { "uris" : uris };
+        fetchOptions.body = JSON.stringify({ "uris" : uris });
 
         const response = await fetch("https://api.spotify.com/v1/playlists/" + playlist_id + "/tracks", fetchOptions);
         const data = await response.json();
@@ -873,15 +873,17 @@ class SpotifyAPI  {
      * @returns 
      */
     async createPlaylist(user_id, name, _public, collaborative, description)  {
-        let fetchOptions = this.#basicSpotifyFetchOptions("PUT");
-        fetchOptions.body = {
+        let fetchOptions = this.#basicSpotifyFetchOptions("POST");
+        fetchOptions.body = JSON.stringify({
             "name" : name,
             "public" : _public,
             "collaborative" : collaborative,
             "description" : description
-        };
+        });
 
-        const response = await fetch("https://api.spotify.com/v1/user/" + user_id + "/playlists", fetchOptions);
+        console.log(fetchOptions);
+
+        const response = await fetch("https://api.spotify.com/v1/me/playlists", fetchOptions);
         const data = await response.json();
         return data;
     }

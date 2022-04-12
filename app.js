@@ -96,11 +96,22 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     let tracks = await getTracksOfManyPlaylists(playlists);
 
     //Some printing of the track IDs. This will be replaced with using data structures to prioritize tracks.
+    let tracksMap = new CustomMap();
     for (let i = 0; i < tracks.length; i++)  {
-        console.log(tracks[i].track.id);
+        tracksMap.insert(tracks[i].track.id);
     }
-    console.log("Tracks Count: " + tracks.length);
+    let arr = tracksMap.getsTop(50);
 
+    let currentUser = await SpotifyAPIObject.getCurrentUserProfile();
+    let snapshot = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
+    let uris = [];
+    for (let i = 0; i < arr.length; i++)  {
+        uris.push("spotify:track:" + arr[i].data[0]);
+    }
+    let response = await SpotifyAPIObject.addItemsToPlaylist(snapshot.id, uris);
+    console.log(response);
+
+    /*
     let tracksTree = new CustomTree();
 
     for (let i = 0; i < tracks.length; i++)  {
@@ -110,6 +121,8 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     let arr = tracksTree.generateList();
 
     console.log(arr);
+    */
+   res.sendStatus(200);
 });
 
 

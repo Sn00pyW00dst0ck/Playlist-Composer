@@ -22,22 +22,11 @@ function App()  {
     const auth = useAuth(code); // state for our app that tells if backend is logged in to spotify
     console.log("APP AUTH: " + auth);
 
-    const {isLoading, responseData, fetchError} = useFetch("/api");
-
     return (
         <>
 
             <Router>
                 <Navbar auth={auth}/> {/* Pass authentication state to the navbar component */}
-
-                {/* Testing for the useFetch Hook */}
-                {isLoading && <span>Loading.....</span>}
-                {!isLoading && fetchError ? (
-                  <span>Error in fetching data ...</span>
-                ) : (
-                  <span>{JSON.stringify(responseData)}</span>
-                )}
-
 
                 <Routes>
                     {/* PUBLIC Landing Page */}
@@ -57,7 +46,7 @@ function App()  {
                     {/* Protected Pages (requires user to be logged in) */}
                     <Route element={<ProtectedRoute auth={auth}/>}> {/* Pass authentication state to the protected route component */}
                         <Route path="/choose-users" element={<SelectUsersPage />} />
-                        <Route path="/preview-playlist" element={<PlaylistPage />} />
+                        <Route path="/preview-playlist/:user1/:user2/:user3/:user4" element={<PlaylistPage />} />
                     </Route>
 
                 </Routes>
