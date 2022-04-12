@@ -36,7 +36,6 @@ class Node {
             value = 1
         }
         this.data[1] = this.data[1] + value;
-        console.log("Updated: " + this.data[0] + " with " + this.second());
     }
 }
 
@@ -246,27 +245,27 @@ class Map  {
     }
 }
 
-let map1 = new Map();
-map1.insert("baby");
-map1.insert("bacy", 20);
-map1.insert("beby", 40); 
-map1.insert("babie");
-map1.insert("bavi");
-map1.insert("bay");
-map1.insert("bcy");
-map1.insert("beb");
-map1.insert("bbi");
-map1.insert("bbi");
-map1.insert("bba", 10)
-map1.insert("bi", 11);
-map1.insert("bay");
-map1.insert("bcy");
-map1.insert("beb", 5);
+// let map1 = new Map();
+// map1.insert("baby");
+// map1.insert("bacy", 20);
+// map1.insert("beby", 40); 
+// map1.insert("babie");
+// map1.insert("bavi");
+// map1.insert("bay");
+// map1.insert("bcy");
+// map1.insert("beb");
+// map1.insert("bbi");
+// map1.insert("bbi");
+// map1.insert("bba", 10)
+// map1.insert("bi", 11);
+// map1.insert("bay");
+// map1.insert("bcy");
+// map1.insert("beb", 5);
 
-let arr = map1.getsTop(map1.getCurrSize());
+// let arr = map1.getsTop(map1.getCurrSize());
 
-for (let x = 0; x < arr.length; x++) {
-    console.log(arr[x].first() + " " + arr[x].second());
-}
+// for (let x = 0; x < arr.length; x++) {
+//     console.log(arr[x].first() + " " + arr[x].second());
+// }
 
-//module.exports = Map;
+module.exports = Map;
