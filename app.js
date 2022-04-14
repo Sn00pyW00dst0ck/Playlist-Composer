@@ -92,8 +92,19 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     console.log(req.body);
 
     //Requests for playlists and tracks data
-    let playlists = await getPlaylistData(req.body.users);
-    let tracks = await getTracksOfManyPlaylists(playlists);
+    //USE TRY CATCH TO IMPLEMENT ERROR HANDLING!!
+    //IMLPEMENT FILTER ON CURRENT USER's PLAYLISTS
+    let playlists;
+    let tracks;
+    try  {
+        playlists = await getPlaylistData(req.body.users);
+        tracks = await getTracksOfManyPlaylists(playlists);
+    } catch (error)  {
+        console.log("There was an error getting playlists and tracks!");
+        console.log(error);
+        res.status(500).send(new Error("Error: " + error));
+        return;
+    }
 
     //Some printing of the track IDs. This will be replaced with using data structures to prioritize tracks.
     let tracksMap = new CustomMap();

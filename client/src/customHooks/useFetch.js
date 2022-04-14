@@ -26,6 +26,7 @@ export default function useFetch(url, options) {
         const requestData = async () =>  {
             try  {
                 const response = await fetch(url, options);
+                if (response.status !== 200)  { throw new Error(response); } //Throw error if status is not 200
                 const data = await response.json();
                 setResponseData(data);
             } catch (error)  {

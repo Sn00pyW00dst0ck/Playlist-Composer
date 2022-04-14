@@ -21,6 +21,8 @@ function PlaylistPage()  {
 
     const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);
 
+    console.log(responseData);
+    console.log(fetchError);
     return (
         <>
         <section className="landing-main">
@@ -30,8 +32,12 @@ function PlaylistPage()  {
             <p>{user3}</p>
             <p>{user4}</p>
             {isLoading && <p>Loading...</p>} 
-            {!isLoading && fetchError && <p>ERROR! {JSON.stringify(fetchError)}</p>}
-            {!isLoading && <p>Success! {JSON.stringify(responseData)}</p>} 
+            {(!isLoading && fetchError != null) && 
+                <p>ERROR! {JSON.stringify(fetchError)}</p>
+            }
+            {(!isLoading && responseData != null) && 
+                <p>SUCCESS! {JSON.stringify(responseData)}</p>
+            }
         </section>  
         </>
     );
