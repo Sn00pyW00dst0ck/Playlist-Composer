@@ -38,15 +38,41 @@ section {
   background-color: #39c97b;
 }
 
+.about-header{
+  font-weight: bold;
+}
+
 .about {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 
-.about > *{
-  flex-basis: 100%;
+.about > *:nth-child(1){
+  flex: 1 1 70%;
+  min-width: 30ch;
 }
 
+.about > *:nth-child(2){
+  flex: 1 1 30%;
+  min-width: 15ch;
+}
+
+.info-col > *{
+  padding: 20px;
+}
+
+.img-col{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.img-col img{
+  width:200px;
+  height: auto;
+}
 
 .founders{
   display: flex;
