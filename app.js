@@ -1,26 +1,18 @@
 //Imports
 const express = require('express');
-const res = require('express/lib/response');
 const path = require('path');
-const { URLSearchParams } = require('url');
-const SpotifyAPI = require('./spotify-api');
-const CustomMap = require('./Data Structures/Map');
-const CustomTree = require("./Data Structures/AVLTree");
 const cors = require('cors');
 require('dotenv').config();
+const SpotifyAPI = require('./spotify-api');
+const CustomMap = require('./Data Structures/Map');
+const CustomTree = require("./Data Structures/RedBlackTree.js");
 
 //Setup the Port and express
 const PORT = process.env.PORT || 3001;
 const APP = express();
-
 APP.use(cors());
 APP.use(express.static(path.join(__dirname, 'Public')));
 APP.use(express.json({ limit: '1mb', type: '*/*'}));
-
-//Test react interaction...
-APP.get("/api", (req, res) => {
-    res.json({ message: "Hello from server!" });
-});
 
 //Setup the Spotify API Object
 const CLIENT_ID = process.env.SPOTIFY_CLIENT_ID || null;
@@ -49,9 +41,8 @@ APP.get("/api/current-user", async (req, res) =>  {
     res.status(200).json(user)
 });
 
-//SOME HELPER FUNCTIONS BELOW!
 
-//Move this to Spofity API object???
+//Helper function for the /api/create-playlist route
 const getPlaylistData = async (users) => {
     //Make all the requests to Spotify for user playlists
     let promiseArray = [];
@@ -69,7 +60,7 @@ const getPlaylistData = async (users) => {
     return playlistData;
 }
 
-//Move this to Spotify API object???
+//Helper function for the /api/create-playlist route
 const getTracksOfManyPlaylists = async (playlists) =>  {
     //Make all the requests to Spotify for user playlists
     let promiseArray = [];
@@ -86,13 +77,13 @@ const getTracksOfManyPlaylists = async (playlists) =>  {
     return tracksData;
 }
 
+//Create a new playlist on Spotify for the logged in user's profile
 APP.post("/api/create-playlist", async (req, res) =>  {
     //The request body should supply the (up to) 5 users to create playlist for
     console.log("Creating playlist");
     console.log(req.body);
 
-    //Requests for playlists and tracks data
-    //USE TRY CATCH TO IMPLEMENT ERROR HANDLING!!
+    //Requests for playlists and tracks data with error handleing
     //IMLPEMENT FILTER ON CURRENT USER's PLAYLISTS
     let playlists;
     let tracks;
@@ -106,40 +97,38 @@ APP.post("/api/create-playlist", async (req, res) =>  {
         return;
     }
 
-    //Some printing of the track IDs. This will be replaced with using data structures to prioritize tracks.
+    //Order tracks based on number of occurrances using an unordered_map
     let tracksMap = new CustomMap();
     for (let i = 0; i < tracks.length; i++)  {
         tracksMap.insert(tracks[i].track.id);
     }
     let arr = tracksMap.getsTop(50);
 
+    /*
+    //Order tracks based on number of occurrances using a RED/BLACK tree
+    let tracksTree = new CustomTree();
+    for (let i = 0; i < tracks.length; i++)  {
+        tracksTree.insert(tracks[i].track.id);
+    }
+    let arr = tracksTree.generateList();
+    console.log(arr);
+    */
+
+    //Spotify API calls to make the playlist & add all the songs
     let currentUser = await SpotifyAPIObject.getCurrentUserProfile();
-    let snapshot = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
+    let createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
     let uris = [];
     for (let i = 0; i < arr.length; i++)  {
         uris.push("spotify:track:" + arr[i].data[0]);
     }
-    let response = await SpotifyAPIObject.addItemsToPlaylist(snapshot.id, uris);
-    console.log(response);
+    let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, uris);
 
-    /*
-    let tracksTree = new CustomTree();
-
-    for (let i = 0; i < tracks.length; i++)  {
-        tracksTree.insert(tracks[i].track.id);
-    }
-
-    let arr = tracksTree.generateList();
-
-    console.log(arr);
-    */
-   res.sendStatus(200);
+    //Send a response to the front end
+    res.status(200).send(createdPlaylist.external_urls);
 });
 
-
- 
 /*--------------------------------------------------------------------------------
-   Spotify Credentials 
+   Spotify Credentials - logging in and out
 --------------------------------------------------------------------------------*/
 
 APP.post("/login", async (req, res) =>  {
