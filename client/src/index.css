@@ -43,6 +43,20 @@ section {
   display: flex;
 }
 
+.about > *{
+  flex-basis: 100%;
+}
+
+
+.founders{
+  display: flex;
+  width: 100%;
+}
+
+.founders > *{
+  flex-basis: 100%;
+}
+
 /* First wave spacer in landing page */
 .spacer {
   aspect-ratio: 960/300;
@@ -50,6 +64,12 @@ section {
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+}
+
+iframe{
+  border-radius:12px;
+  width: 100%;
+  padding: 50px;
 }
 
 .layer1 {
