@@ -43,11 +43,11 @@ function PlaylistPage()  {
             {(!isLoading && responseData != null) && 
             <>
                 <div>
-                    <h1>Playlist Preview</h1>
+                    <h1 className="playlist-header">Playlist Preview</h1>
                 </div>
                     <iframe  src = {`https://open.spotify.com/embed/${responseData.spotify.slice(responseData.spotify.length - 31)}?utm_source=generator`} width="100%" height="380" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
             </>}
-            
+
         </section>  
         </>
     );

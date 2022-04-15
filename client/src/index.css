@@ -1,3 +1,4 @@
+/* Global styling */
 body {
   margin: 0px;
   padding: 0px;
@@ -23,6 +24,17 @@ code {
     monospace;
 }
 
+a{
+  text-decoration: none;
+  color: black;
+}
+
+
+.footer-header, .select-header, .playlist-header{
+  font-weight: bold;
+  font-size: 5vh;
+}
+
 /* CSS For Landing Page */
 section {
   position: relative;
@@ -40,6 +52,8 @@ section {
 
 .about-header{
   font-weight: bold;
+  font-size: 5vh;
+  color: black;
 }
 
 .about {
@@ -104,4 +118,10 @@ iframe{
 
 .layer2 {
   background-image: url("../public/layered-waves-haikei.svg");
+}
+
+/* Select-Users-Page CSS */
+
+.playlist-btn{
+
 }
