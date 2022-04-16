@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react"
 import { useParams } from "react-router-dom";
-import { Audio } from  'react-loader-spinner'
+import { Audio } from  'react-loader-spinner';
 
-
+import styles from "./Playlist-Page.module.css";
 
 import useFetch from "../customHooks/useFetch";
 
@@ -18,10 +18,6 @@ function PlaylistPage()  {
         playlistDesc: playlistDesc,
         playlistSize: playlistSize
     }
-    
-    /*[playlistName, playlistDesc, playlistSize].filter((e) => {
-        return e !== 'null' && e !== '' && e !== null;
-    });*/
 
     const [options, setOptions] = useState({
         method: "POST",
@@ -41,7 +37,7 @@ function PlaylistPage()  {
                     <Audio
                         height="250"
                         width="500"
-                        color='#39c97b'
+                        color='#00a96f'
                         ariaLabel='loading'
                     />
                     <h1>Your playlist is being created ... </h1>
