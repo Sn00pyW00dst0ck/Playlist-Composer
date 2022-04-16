@@ -20,7 +20,7 @@ function UserInfo()  {
         });
         window.location.reload();
     }
-
+    
     return (
         <>
             <li className={styles.userInfoContainer}>

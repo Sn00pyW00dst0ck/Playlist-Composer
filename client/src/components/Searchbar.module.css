@@ -24,3 +24,25 @@
     text-emphasis: none;
     text-decoration: none;
 }
+
+.descBox  {
+    resize: none;
+    margin: 0;
+    padding: 0;
+    padding-left: 1.5em;
+    padding-top: 1.5em;
+
+    border: none;
+    border-radius: 1.5em;
+
+    height: 4em;
+    width: calc(100% - 1.5em);
+
+    font-family: sans-serif;
+    font-size: 1em;
+
+    
+    text-emphasis: none;
+    text-decoration: none;
+
+}
