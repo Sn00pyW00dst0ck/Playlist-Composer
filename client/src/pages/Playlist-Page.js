@@ -7,7 +7,7 @@ import styles from "./Playlist-Page.module.css";
 import useFetch from "../customHooks/useFetch";
 
 function PlaylistPage()  {
-    const { user1, user2, user3, user4, playlistName, playlistDesc, playlistSize } = useParams();
+    const { user1, user2, user3, user4, playlistName, playlistDesc, playlistSize, generationMethod } = useParams();
 
     let users = [user1, user2, user3, user4].filter((e) =>  {
         return e !== 'null' && e !== '' && e !== null;
@@ -24,7 +24,7 @@ function PlaylistPage()  {
         headers:  {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({users:users, playlistOptions:playlistOptions})
+        body: JSON.stringify({users:users, playlistOptions:playlistOptions, generationMethod: generationMethod})
     });
     
     const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);

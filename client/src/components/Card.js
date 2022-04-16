@@ -8,11 +8,11 @@ function Card(props) {
     let classname1 = `${styles.card__face} ${styles.card__face__front}`;
     let classname2 = `${styles.card__face} ${styles.card__face__back}`;
     return (
-        <div className={styles.card} onClick={() => {
+    <div className={styles.card} onClick={(event) => {
             setFlipped(!flipped);
         }}>
 		<div className={
-            [flipped && styles.is_flipped, styles.card__inner]
+            [(flipped) && styles.is_flipped, styles.card__inner]
             .filter(e => !!e)
             .join(' ')
         }>
@@ -30,6 +30,9 @@ function Card(props) {
 						<h3>{props.role}</h3>
 						<p>{props.info}</p>
 					</div>
+                    <a onClick={(event) =>  {
+                        event.stopPropagation();
+                    }} href={props.url} target='_blank' className={styles.profileLink}><button >See more work by this developer</button></a>
 				</div>
 			</div>
 		</div>

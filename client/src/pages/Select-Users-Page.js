@@ -8,6 +8,8 @@ import styles from "../components/Searchbar.module.css"
 import downCarrot from "../imgs/downCarrotWhite.png"
 import upCarrot from "../imgs/upCarrotWhite.png"
 import NumberPicker from "react-widgets/NumberPicker";
+import { FormControl, FormLabel, FormControlLabel, RadioGroup, Radio } from '@mui/material';
+
 
 
 function SelectUsersPage() {
@@ -21,9 +23,15 @@ function SelectUsersPage() {
     const [playlistDescription, setPlaylistDescription] = useState(null);
     const [playlistSize, setPlaylistSize] = useState(50);
     const [isOpen, toggleOpen] = useState(false);
+    const [generationMethod, setGenerationMethod] = useState("Map");
     
     function openOptions () {
         toggleOpen(!isOpen);
+    }
+
+    const toggleGenerationMethod = (event) => {
+        setGenerationMethod(event.target.value)
+        console.log(event.target.value);
     }
 
     return(
@@ -70,9 +78,24 @@ function SelectUsersPage() {
               <h2>Playlist Size: </h2>
               <NumberPicker defaultValue={50} onChange={value => setPlaylistSize(value)}/>  
             </div>
+            <div onChange={toggleGenerationMethod}>
+                <h2>Playlist Generation Method</h2>
+                <FormControl>
+                    <RadioGroup
+                        aria-labelledby="demo-controlled-radio-buttons-group"
+                        name="controlled-radio-buttons-group"
+                        value={generationMethod}
+                        onChange={toggleGenerationMethod}
+                    >
+                        <FormControlLabel value="Map" control={<Radio style={{color:"white"}} />} label="Hash Map" />
+                        <FormControlLabel value="Tree" control={<Radio style={{color:"white"}} />} label="Red-Black Tree" />
+                    </RadioGroup>
+                </FormControl>
+            </div>
+            
             </>}
             <br></br>
-            <div className={styles.playlistButtonContainer}><Link className={styles.playlistButton} to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Create Playlist</Link></div>
+            <div className={styles.playlistButtonContainer}><Link className={styles.playlistButton} to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}/${generationMethod}`} >Create Playlist</Link></div>
         
         </section>
         </>
