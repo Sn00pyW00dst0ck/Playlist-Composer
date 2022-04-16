@@ -107,7 +107,8 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     for (let i = 0; i < tracks.length; i++)  {
         tracksMap.insert(tracks[i].track.id);
     }
-    let arr = tracksMap.getsTop(50);
+    const trackCount = req.body.playlistOptions.playlistSize || 50; 
+    let arr = tracksMap.getsTop(trackCount);
 
     /*
     //Order tracks based on number of occurrances using a RED/BLACK tree
@@ -120,8 +121,11 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     */
 
     //Spotify API calls to make the playlist & add all the songs
+    let createdPlaylist;
+    const title = req.body.playlistOptions.playlistName != "null" ? req.body.playlistOptions.playlistName : "Playlist Composer: " + currentUser.id + " " + req.body.users.join(" ");
+    const description = req.body.playlistOptions.playlistDesc > 1 ? req.body.playlistOptions.playlistDesc : "Playlist Composer made this playlist for: \n" + req.body.users.join(" ")
     try  {
-        let createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
+        createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, title, false, false, description);
         let uris = [];
         for (let i = 0; i < arr.length; i++)  {
             uris.push("spotify:track:" + arr[i].data[0]);
