@@ -2,10 +2,17 @@
     height: calc(100vh - 10em);
 }
 
+.previewTitleLinkContainer  {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
 .previewContainer  {
     width: 100%;
     height: 100%;
     display: flex;
+    gap: 1em;
 }
 
 .previewContainer iframe  {
@@ -21,7 +28,17 @@
     font-weight: bolder;
 }
 
+.linkToSpotifyContainer  {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    gap: 1em;
+}
+
 .linkToSpotify  {
+    width: 10em;
+    height: 3em;
+
     /* An old CSS text centering trick for <a> tags I've been using for a while */
     display: flex;
     flex-direction: column;
@@ -78,4 +95,15 @@
 .SpotifyLoginButton:visited  {
     color: white;
     text-decoration: none;
+}
+
+@media (max-width: 600px) {
+    .previewContainer   {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .PageTitle  {
+        text-align: center;
+    }
 }
