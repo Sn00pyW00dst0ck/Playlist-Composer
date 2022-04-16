@@ -31,7 +31,7 @@ function UserInfo()  {
                     }
                     {(!isLoading && responseData != null) &&
                         //put the image from the data there if it's provided, else the normal icon
-                        <img src={defaultProfileImg}></img>
+                        <img src={(responseData.images.length > 0 ? responseData.images[0].url : defaultProfileImg)}></img>
                     }
                     {(!isLoading && fetchError != null) && 
                         //put the placeholder image
@@ -47,7 +47,7 @@ function UserInfo()  {
                         {(!isLoading && responseData != null) && 
                         <>
                         <UserInfoDropDownItem
-                            leftIcon={<img src={defaultProfileImg} height="40px" width="40px"></img>}
+                            leftIcon={<img src={(responseData.images.length > 0 ? responseData.images[0].url : defaultProfileImg)} height="40px" width="40px"></img>}
                             rightIcon="😃">
                             {responseData.display_name}
                         </UserInfoDropDownItem>
