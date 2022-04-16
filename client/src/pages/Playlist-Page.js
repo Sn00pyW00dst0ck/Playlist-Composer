@@ -23,21 +23,19 @@ function PlaylistPage()  {
     
     const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);
 
-    
-
     return (
         <>
         <section className="landing-main">
             {/* Loading Screen for playlist preview page */}
             {isLoading && <>
                     <Audio
-                        height="100"
-                        width="100"
+                        height="250"
+                        width="500"
                         color='#39c97b'
                         ariaLabel='loading'
                     />
                     <h1>Your playlist is being created ... </h1>
-            </>} 
+            </>}
             
             {/* iframe with spotify playlist embedded */}
             {(!isLoading && responseData != null) && 

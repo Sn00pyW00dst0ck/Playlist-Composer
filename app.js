@@ -82,6 +82,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     //The request body should supply the (up to) 5 users to create playlist for
     console.log("Creating playlist");
     console.log(req.body);
+    const currentUser = await SpotifyAPIObject.getCurrentUserProfile();
 
     //Requests for playlists and tracks data with error handleing
     //IMLPEMENT FILTER ON CURRENT USER's PLAYLISTS
@@ -89,11 +90,15 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     let tracks;
     try  {
         playlists = await getPlaylistData(req.body.users);
-        tracks = await getTracksOfManyPlaylists(playlists);
+        //Filter the playlists so that the logged in user isn't given preference
+        const filteredPlaylists = playlists.filter(elem =>  {
+            return (req.body.users.includes(elem.owner.id) || elem.owner.id == currentUser.id);
+        });
+        tracks = await getTracksOfManyPlaylists(filteredPlaylists);
     } catch (error)  {
         console.log("There was an error getting playlists and tracks!");
         console.log(error);
-        res.status(500).send(new Error("Error: " + error));
+        res.status(500).send(new Error("Error: There was an error getting playlists and tracks! " + error));
         return;
     }
 
@@ -115,13 +120,16 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     */
 
     //Spotify API calls to make the playlist & add all the songs
-    let currentUser = await SpotifyAPIObject.getCurrentUserProfile();
-    let createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
-    let uris = [];
-    for (let i = 0; i < arr.length; i++)  {
-        uris.push("spotify:track:" + arr[i].data[0]);
+    try  {
+        let createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, "API-Test Playlist 1", false, false, "Testing API");
+        let uris = [];
+        for (let i = 0; i < arr.length; i++)  {
+            uris.push("spotify:track:" + arr[i].data[0]);
+        }
+        let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, uris);    
+    } catch (error)  {
+        res.status(500).send(new Error("Error: There was an while creating the playlist! " + error))
     }
-    let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, uris);
 
     //Send a response to the front end
     res.status(200).send(createdPlaylist.external_urls);
