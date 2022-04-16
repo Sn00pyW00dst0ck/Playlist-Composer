@@ -42,7 +42,7 @@ class Node {
 class Map  {
     constructor() {
         this.allData = []
-        this.maxCap = 15;
+        this.maxCap = 2000;
         this.currSize = 0;
         this.loadFactor = 0.50;
     }
@@ -183,22 +183,7 @@ class Map  {
         return null;
     }
 
-    swap(arr, xp, yp) {
-        var temp = arr[xp];
-        arr[xp] = arr[yp];
-        arr[yp] = temp;
-    }
 
-    sort(arr) {
-        var i, j;
-        for (i = 0; i < arr.length - 1; i++) {
-            for (j = 0; j < arr.length -i-1; j++) {
-                if (arr[j].second() < arr[j+1].second()) {
-                    this.swap(arr,j,j+1);   
-                }
-            }
-        }
-    }
     /**
      * 
      * @param {However many entries} num 
@@ -216,7 +201,10 @@ class Map  {
             if (topList.length < num) {
                 if (typeof this.allData[x] !== 'undefined') {
                     topList.push(this.allData[x]);
-                    this.sort(topList);
+                    topList.sort(function(count1, count2){
+                        if(count1.second() > count2.second()) return -1;
+                        if(count1.second() < count2.second()) return 1;
+                    });
                 }
             //Otherwise find min and compare
             } else {
@@ -228,7 +216,10 @@ class Map  {
                     }
                 }
 
-                this.sort(topList);
+                topList.sort(function(count1, count2){
+                    if(count1.second() > count2.second()) return -1;
+                    if(count1.second() < count2.second()) return 1;
+                });
             }
 
         }
