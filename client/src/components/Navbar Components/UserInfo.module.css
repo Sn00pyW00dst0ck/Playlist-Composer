@@ -54,6 +54,7 @@
 }
 .UserInfoDropDownItem:hover  {
     background-color: #002f53;
+    cursor: pointer;
 }
 
 .UserInfoDropDownItem span  {
