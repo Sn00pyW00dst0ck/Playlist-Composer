@@ -1,28 +1,30 @@
 import React, {useEffect, useState} from "react"
 import { useParams } from "react-router-dom";
-import { Audio } from  'react-loader-spinner'
+import { Audio } from  'react-loader-spinner';
 
-
+import styles from "./Playlist-Page.module.css";
 
 import useFetch from "../customHooks/useFetch";
 
 function PlaylistPage()  {
-    const { user1, user2, user3, user4, playlistName, playlistDesc, playlistSize } = useParams();
+    const { user1, user2, user3, user4, playlistName, playlistDesc, playlistSize, generationMethod } = useParams();
 
     let users = [user1, user2, user3, user4].filter((e) =>  {
         return e !== 'null' && e !== '' && e !== null;
     });
 
-    let playlistOptions = [playlistName, playlistDesc, playlistSize].filter((e) => {
-        return e !== 'null' && e !== '' && e !== null;
-    });
+    let playlistOptions = {
+        playlistName: playlistName,
+        playlistDesc: playlistDesc,
+        playlistSize: playlistSize
+    }
 
     const [options, setOptions] = useState({
         method: "POST",
         headers:  {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({users:users, playlistOptions:playlistOptions})
+        body: JSON.stringify({users:users, playlistOptions:playlistOptions, generationMethod: generationMethod})
     });
     
     const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);
@@ -35,7 +37,7 @@ function PlaylistPage()  {
                     <Audio
                         height="250"
                         width="500"
-                        color='#39c97b'
+                        color='#00a96f'
                         ariaLabel='loading'
                     />
                     <h1>Your playlist is being created ... </h1>
