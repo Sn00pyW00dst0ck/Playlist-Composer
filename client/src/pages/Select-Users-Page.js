@@ -38,6 +38,7 @@ function SelectUsersPage() {
                 if you have fewer than 4 other users to 
                 create a playlist for.
             </p>
+            <br></br>
 
             {/* Put 4 Searchbars on the page, they each can update one specific name */}
             <Searchbar setUser={setUser1} />
@@ -52,6 +53,7 @@ function SelectUsersPage() {
                     <h1 className="select-header">Playlist Options</h1>
                     <img src={upCarrot}/>
                 </div>
+                <br></br>
             </>}
 
             
@@ -60,6 +62,7 @@ function SelectUsersPage() {
                 <h1 className="select-header">Playlist Options</h1>
                 <img src={downCarrot}/>
             </div>
+            <br></br>
             <input className={styles.Searchbar} type="text" onChange={e => setPlaylistName(e.target.value)} placeholder="Enter A Playlist Name"/>
             <textarea className={styles.descBox} type="text" maxLength="300" onChange={e => setPlaylistDescription(e.target.value)} placeholder="Enter A Playlist Description" />
             <div className={styles.playlistSizeContainer}>

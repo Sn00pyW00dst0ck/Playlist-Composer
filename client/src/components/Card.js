@@ -8,25 +8,25 @@ function Card(props) {
     let classname1 = `${styles.card__face} ${styles.card__face__front}`;
     let classname2 = `${styles.card__face} ${styles.card__face__back}`;
     return (
-        <div class={styles.card} onClick={() => {
+        <div className={styles.card} onClick={() => {
             setFlipped(!flipped);
         }}>
-		<div class={
+		<div className={
             [flipped && styles.is_flipped, styles.card__inner]
             .filter(e => !!e)
             .join(' ')
         }>
-			<div class={classname1}>
+			<div className={classname1}>
 				<h2>{props.name}</h2>
                 <p></p>
 			</div>
-			<div class={classname2}>
-				<div class={styles.card__content}>
-					<div class={styles.card__header}>
-						<img src={props.image} alt="" class={styles.pp} />
+			<div className={classname2}>
+				<div className={styles.card__content}>
+					<div className={styles.card__header}>
+						<img src={props.image} alt="" className={styles.pp} />
 						<h2>{props.name}</h2>
 					</div>
-					<div class={styles.card__body}>
+					<div className={styles.card__body}>
 						<h3>{props.role}</h3>
 						<p>{props.info}</p>
 					</div>
