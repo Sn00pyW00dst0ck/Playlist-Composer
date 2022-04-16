@@ -216,7 +216,7 @@ class RedBlackTree{
     insert(key) {
         var pt = new Node(key);
         this.root = this.recursiveInsert(this.root, pt);
-        console.log("Inserted");
+        //console.log("Inserted");
         //this.balancing(root, pt);
     }
 

@@ -86,7 +86,6 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     console.log("USER: " + currentUser);
 
     //Requests for playlists and tracks data with error handleing
-    //IMLPEMENT FILTER ON CURRENT USER's PLAYLISTS
     let playlists;
     let tracks;
     try  {
@@ -103,23 +102,38 @@ APP.post("/api/create-playlist", async (req, res) =>  {
         return;
     }
 
-    //Order tracks based on number of occurrances using an unordered_map
-    let tracksMap = new CustomMap();
-    for (let i = 0; i < tracks.length; i++)  {
-        tracksMap.insert(tracks[i].track.id);
-    }
+    //Order tracks based on number of occurrances using specified data structure
+    let tracksArray = [];
+    let trackURIs = [];
     const trackCount = req.body.playlistOptions.playlistSize || 50; 
-    let arr = tracksMap.getsTop(trackCount);
-
-    /*
-    //Order tracks based on number of occurrances using a RED/BLACK tree
-    let tracksTree = new CustomTree();
-    for (let i = 0; i < tracks.length; i++)  {
-        tracksTree.insert(tracks[i].track.id);
+    if (req.body.generationMethod === 'map')  {
+        //Prioritize using the map
+        let tracksMap = new CustomMap();
+        for (let i = 0; i < tracks.length; i++)  {
+            tracksMap.insert(tracks[i].track.id);
+        }
+        tracksArray = tracksMap.getsTop(trackCount);
+        //Generate URI list
+        for (let i = 0; i < tracksArray.length; i++)  {
+            trackURIs.push("spotify:track:" + tracksArray[i].data[0]);
+        }
+    } else if (req.body.generationMethod === 'tree')  {
+        //Prioritize using the tree
+        let tracksTree = new CustomTree();
+        for (let i = 0; i < tracks.length; i++)  {
+            tracksTree.insert(tracks[i].track.id);
+        }
+        tracksArray = tracksTree.generateList();
+        tracksArray = tracksArray.slice(0, trackCount);
+        //Generate URI list
+        for (let i = 0; i < tracksArray.length; i++)  {
+            trackURIs.push("spotify:track:" + tracksArray[i].song);
+        }
+    } else  {
+        console.log("ERROR: generationMethod is not valid!");
+        res.status(500).send(new Error("Error: Not a valid generation method"));
+        return;
     }
-    let arr = tracksTree.generateList();
-    console.log(arr);
-    */
 
     //Spotify API calls to make the playlist & add all the songs
     let createdPlaylist;
@@ -127,15 +141,11 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     const description = req.body.playlistOptions.playlistDesc > 1 ? req.body.playlistOptions.playlistDesc : "Playlist Composer made this playlist for: \n" + req.body.users.join(" ")
     try  {
         createdPlaylist = await SpotifyAPIObject.createPlaylist(currentUser.id, title, false, false, description);
-        let uris = [];
-        for (let i = 0; i < arr.length; i++)  {
-            uris.push("spotify:track:" + arr[i].data[0]);
-        }
         let playlistRef = await SpotifyAPIObject.getPlaylist(createdPlaylist.id);
-
-        let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, uris);    
+        let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, trackURIs);    
     } catch (error)  {
-        res.status(500).send(new Error("Error: There was an while creating the playlist! " + error))
+        res.status(500).send(new Error("Error: There was an while creating the playlist! " + error));
+        return;
     }
 
     //Send a response to the front end
