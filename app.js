@@ -83,6 +83,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     console.log("Creating playlist");
     console.log(req.body);
     const currentUser = await SpotifyAPIObject.getCurrentUserProfile();
+    console.log("USER: " + currentUser);
 
     //Requests for playlists and tracks data with error handleing
     //IMLPEMENT FILTER ON CURRENT USER's PLAYLISTS
@@ -95,7 +96,6 @@ APP.post("/api/create-playlist", async (req, res) =>  {
             return (req.body.users.includes(elem.owner.id) || elem.owner.id == currentUser.id);
         });
         tracks = await getTracksOfManyPlaylists(filteredPlaylists);
-        console.log(filteredPlaylists);
     } catch (error)  {
         console.log("There was an error getting playlists and tracks!");
         console.log(error);
@@ -110,7 +110,6 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     }
     const trackCount = req.body.playlistOptions.playlistSize || 50; 
     let arr = tracksMap.getsTop(trackCount);
-    console.log(arr);
 
     /*
     //Order tracks based on number of occurrances using a RED/BLACK tree
@@ -132,6 +131,8 @@ APP.post("/api/create-playlist", async (req, res) =>  {
         for (let i = 0; i < arr.length; i++)  {
             uris.push("spotify:track:" + arr[i].data[0]);
         }
+        let playlistRef = await SpotifyAPIObject.getPlaylist(createdPlaylist.id);
+
         let finalPlaylistSnapshot = await SpotifyAPIObject.addItemsToPlaylist(createdPlaylist.id, uris);    
     } catch (error)  {
         res.status(500).send(new Error("Error: There was an while creating the playlist! " + error))
