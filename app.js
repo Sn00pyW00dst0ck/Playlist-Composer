@@ -79,6 +79,9 @@ const getTracksOfManyPlaylists = async (playlists) =>  {
 
 //Create a new playlist on Spotify for the logged in user's profile
 APP.post("/api/create-playlist", async (req, res) =>  {
+    //Timing Start
+    let timingStart = process.hrtime();
+
     //The request body should supply the (up to) 5 users to create playlist for
     console.log("Creating playlist");
     console.log(req.body);
@@ -148,8 +151,17 @@ APP.post("/api/create-playlist", async (req, res) =>  {
         return;
     }
 
+    //Timing End
+    let timingEnd = process.hrtime(timingStart);
+    console.log(timingEnd);
+
     //Send a response to the front end
-    res.status(200).send(createdPlaylist.external_urls);
+    res.status(200).send({
+        createdPlaylistURL: createdPlaylist.external_urls,
+        timeTaken: timingEnd
+    });
+
+    //res.status(200).send(createdPlaylist.external_urls);
 });
 
 /*--------------------------------------------------------------------------------
