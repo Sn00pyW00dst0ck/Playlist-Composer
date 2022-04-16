@@ -2,8 +2,9 @@ import React from 'react'
 import {useState} from 'react'
 import Searchbar from '../components/Searchbar'
 import { Link } from 'react-router-dom';
-import styles from "../components/Searchbar.module.css"
 import "react-widgets/styles.css";
+import styles from "../components/Searchbar.module.css"
+
 import downCarrot from "../imgs/downCarrotWhite.png"
 import upCarrot from "../imgs/upCarrotWhite.png"
 import NumberPicker from "react-widgets/NumberPicker";
@@ -71,7 +72,7 @@ function SelectUsersPage() {
             </div>
             </>}
             <br></br>
-            <div className={styles.playlistButtonContainer}><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Select Users</Link></div>
+            <div className={styles.playlistButtonContainer}><Link className={styles.playlistButton} to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Create Playlist</Link></div>
         
         </section>
         </>

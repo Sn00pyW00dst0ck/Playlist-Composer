@@ -95,6 +95,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
             return (req.body.users.includes(elem.owner.id) || elem.owner.id == currentUser.id);
         });
         tracks = await getTracksOfManyPlaylists(filteredPlaylists);
+        console.log(filteredPlaylists);
     } catch (error)  {
         console.log("There was an error getting playlists and tracks!");
         console.log(error);
@@ -109,6 +110,7 @@ APP.post("/api/create-playlist", async (req, res) =>  {
     }
     const trackCount = req.body.playlistOptions.playlistSize || 50; 
     let arr = tracksMap.getsTop(trackCount);
+    console.log(arr);
 
     /*
     //Order tracks based on number of occurrances using a RED/BLACK tree

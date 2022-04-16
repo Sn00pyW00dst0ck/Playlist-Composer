@@ -26,6 +26,9 @@ function LandingPage({auth}) {
             <div className="about">
                 <div className="info-col">
                     <br></br>
+                    <br></br>
+                    <br></br>
+                    
                     <h2 className="more">Creating Spotify playlists is slow and time consuming. People have different tastes and it is difficult to create a playlist to satisfy multiple people...</h2> 
                     <br></br>
                     <h2 className="more">Our Playlist Composer seeks to solve this problem by taking in songs from each selected user's personal playlists and aggregating them into one large common playlist.</h2>
