@@ -20,6 +20,8 @@
 .iconButton img { 
     width: calc(5em * 0.475);
     height: calc(5em * 0.475);
+    border-radius: 50%;
+    border: none;
 }
 
 
