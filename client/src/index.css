@@ -39,7 +39,7 @@ a{
 section {
   position: relative;
   text-align: center;
-  padding: 80px 20vw;
+  padding: 80px 5vw;
   min-height: 350px;
   display: flex;
   flex-direction: column;

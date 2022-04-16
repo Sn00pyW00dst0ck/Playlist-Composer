@@ -5,6 +5,7 @@ import Hero from "../components/Landing Page Components/Landing-Hero";
 import Tree from "../imgs/newTree.png";
 import Hash from "../imgs/hash.png"
 import '../index.css';
+import Footer from '../components/Footer';
 
 // Main Content area for landing page
 function LandingPage({auth}) {
@@ -40,10 +41,7 @@ function LandingPage({auth}) {
         <section className="landing-footer">
             <h1 className='footer-header'>Meet the Creators</h1>
             <div className="founders">
-                <div className='col'>GABE Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis
-                nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate</div>
-                <div className='col'>PATRICK CARD</div>
-                <div className='col'>ANDY CARD</div>
+                <Footer/>
             </div>
         </section>
         </>
