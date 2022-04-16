@@ -7,9 +7,13 @@ import { Audio } from  'react-loader-spinner'
 import useFetch from "../customHooks/useFetch";
 
 function PlaylistPage()  {
-    const { user1, user2, user3, user4 } = useParams();
+    const { user1, user2, user3, user4, playlistName, playlistDesc, playlistSize } = useParams();
 
     let users = [user1, user2, user3, user4].filter((e) =>  {
+        return e !== 'null' && e !== '' && e !== null;
+    });
+
+    let playlistOptions = [playlistName, playlistDesc, playlistSize].filter((e) => {
         return e !== 'null' && e !== '' && e !== null;
     });
 
@@ -18,7 +22,7 @@ function PlaylistPage()  {
         headers:  {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({users:users})
+        body: JSON.stringify({users:users, playlistOptions:playlistOptions})
     });
     
     const {isLoading, responseData, fetchError } = useFetch("/api/create-playlist", options);

@@ -4,6 +4,8 @@ import Searchbar from '../components/Searchbar'
 import { Link } from 'react-router-dom';
 import styles from "../components/Searchbar.module.css"
 import "react-widgets/styles.css";
+import downCarrot from "../imgs/downCarrotWhite.png"
+import upCarrot from "../imgs/upCarrotWhite.png"
 import NumberPicker from "react-widgets/NumberPicker";
 
 
@@ -16,7 +18,7 @@ function SelectUsersPage() {
     const [user4, setUser4] = useState(null);
     const [playlistName, setPlaylistName] = useState("API Test Playlist");
     const [playlistDescription, setPlaylistDescription] = useState(null);
-    const [playlistSize, setPlaylistSize] = useState(null);
+    const [playlistSize, setPlaylistSize] = useState(50);
     const [isOpen, toggleOpen] = useState(false);
     
     function openOptions () {
@@ -44,19 +46,29 @@ function SelectUsersPage() {
             <Searchbar setUser={setUser4} />
             
             {/* Button that changes the options for the fetch and triggers the useFetch hook to call our backend */}
-            <h1 className="select-header" onClick={openOptions}>Playlist Options</h1>
+            
+            {!isOpen && <>
+                <div className={styles.optionsDropdown} onClick={openOptions}>
+                    <h1 className="select-header">Playlist Options</h1>
+                    <img src={upCarrot}/>
+                </div>
+            </>}
+
+            
             {isOpen && <>
+            <div className={styles.optionsDropdown} onClick={openOptions}>
+                <h1 className="select-header">Playlist Options</h1>
+                <img src={downCarrot}/>
+            </div>
             <input className={styles.Searchbar} type="text" onChange={e => setPlaylistName(e.target.value)} placeholder="Enter A Playlist Name"/>
-            <div className='playlist-size-container'>
+            <textarea className={styles.descBox} type="text" maxLength="300" onChange={e => setPlaylistDescription(e.target.value)} placeholder="Enter A Playlist Description" />
+            <div className={styles.playlistSizeContainer}>
               <h2>Playlist Size: </h2>
               <NumberPicker defaultValue={50} onChange={value => setPlaylistSize(value)}/>  
             </div>
-
-            <textarea className={styles.descBox} type="text" maxLength="300" onChange={e => setPlaylistDescription(e.target.value)} placeholder="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec." />
-            
             </>}
             <br></br>
-            <button className='playlist-btn'><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}` } >Select Users</Link></button>
+            <button className={styles.playlistButton}><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Select Users</Link></button>
         
         </section>
         </>
