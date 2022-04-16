@@ -47,12 +47,12 @@ section {
 }
 
 .landing-about {
-  background-color: #39c97b;
+  background-color: white;
 }
 
 .about-header{
   font-weight: bold;
-  font-size: 5vh;
+  font-size: 10vh;
   color: black;
 }
 
@@ -124,4 +124,8 @@ iframe{
 
 .playlist-btn{
 
+}
+
+.more {
+  color: black;
 }
