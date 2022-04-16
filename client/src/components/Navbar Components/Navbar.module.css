@@ -2,7 +2,9 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  min-height: 10vh;
+  height: 5em;
+  min-height: 5em;
+  overflow: visible;
 }
 
 .navbarLogo {

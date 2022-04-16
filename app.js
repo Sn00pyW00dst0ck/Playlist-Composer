@@ -38,7 +38,7 @@ APP.get("/api/current-user", async (req, res) =>  {
     if (user.status == 401)  { 
         res.json(null);
     }
-    res.status(200).json(user)
+    res.status(200).json(user);
 });
 
 
@@ -155,6 +155,7 @@ APP.post("/login", async (req, res) =>  {
 
 APP.post("/logout", async (req, res) =>  {
     SpotifyAPIObject.deleteAccessTokens();
+    console.log(SpotifyAPIObject.isLoggedIn());
     res.json({loggedOut: true});
 });
 

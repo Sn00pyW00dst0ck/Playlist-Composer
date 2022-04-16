@@ -139,6 +139,7 @@ class SpotifyAPI  {
 
         clearInterval(this.refresh_timeout);
         this.loggedIn = false;
+        console.log("Logged Out!");
     }
 /*--------------------------------------------------------------------------------
     Authentication Verification Methods
