@@ -1,3 +1,4 @@
+/* Global styling */
 body {
   margin: 0px;
   padding: 0px;
@@ -23,6 +24,17 @@ code {
     monospace;
 }
 
+a{
+  text-decoration: none;
+  color: black;
+}
+
+
+.footer-header, .select-header, .playlist-header{
+  font-weight: bold;
+  font-size: 5vh;
+}
+
 /* CSS For Landing Page */
 section {
   position: relative;
@@ -38,9 +50,51 @@ section {
   background-color: #39c97b;
 }
 
+.about-header{
+  font-weight: bold;
+  font-size: 5vh;
+  color: black;
+}
+
 .about {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
+}
+
+.about > *:nth-child(1){
+  flex: 1 1 70%;
+  min-width: 30ch;
+}
+
+.about > *:nth-child(2){
+  flex: 1 1 30%;
+  min-width: 15ch;
+}
+
+.info-col > *{
+  padding: 20px;
+}
+
+.img-col{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.img-col img{
+  width:200px;
+  height: auto;
+}
+
+.founders{
+  display: flex;
+  width: 100%;
+}
+
+.founders > *{
+  flex-basis: 100%;
 }
 
 /* First wave spacer in landing page */
@@ -52,10 +106,22 @@ section {
   background-size: cover;
 }
 
+iframe{
+  border-radius:12px;
+  width: 100%;
+  padding: 50px;
+}
+
 .layer1 {
   background-image: url("../public/wave-haikei.svg");
 }
 
 .layer2 {
   background-image: url("../public/layered-waves-haikei.svg");
+}
+
+/* Select-Users-Page CSS */
+
+.playlist-btn{
+
 }

@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { Link } from 'react-router-dom'
 import styles from './Navbar.module.css'
 
@@ -12,6 +12,12 @@ function Navbar({auth}) {
     const handleClick = () => setClick(!click);
 
     const loggedIn = auth; 
+
+    const logout = () => {
+        const response = fetch("/logout");
+        console.log("logged out : ", response);
+        loggedIn = false;
+    }
 
     return(
         <nav className={styles.navbar}>
@@ -44,7 +50,7 @@ function Navbar({auth}) {
                         <li className={styles.navItem}>|</li>
                         <li className={styles.navItem}>
                             {/* REPLACE WITH Node Path or maybe component */}
-                            <a href="https://www.spotify.com/logout/">Logout</a>
+                            <Link onClick={logout} to="/">Logout</Link>
                         </li>
                         </>
                     }

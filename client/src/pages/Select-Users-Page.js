@@ -16,8 +16,8 @@ function SelectUsersPage() {
         <>
         {/* Main Content */}
         <section className="landing-main">
-            <h1>Select Other Users To Customize Playlist For</h1>
-            
+            <h1 className="select-header">Select Other Users To Customize Playlist For</h1>
+            <br></br>
             <p> 
                 Enter up to 4 other Spotify usernames. 
                 These users will be used to create the 
@@ -33,7 +33,7 @@ function SelectUsersPage() {
             <Searchbar setUser={setUser4} />
             
             {/* Button that changes the options for the fetch and triggers the useFetch hook to call our backend */}
-            <button><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}` } >Select Users</Link></button>
+            <button className='playlist-btn'><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}` } >Select Users</Link></button>
         
         </section>
         </>

@@ -1,6 +1,6 @@
 import React from 'react';
 import LandingPage from './pages/Landing-Page';
-import SelectUsersPage from './pages/Select-Users-Page'
+import SelectUsersPage from './pages/Select-Users-Page';
 import PlaylistPage from './pages/Playlist-Page';
 import ProtectedRoute from "./components/ProtectedRoute";
 import SpotifyLoginButton from './components/SpotifyLoginButton';
