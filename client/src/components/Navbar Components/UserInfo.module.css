@@ -1,0 +1,70 @@
+.userInfoContainer  {
+    width: calc(5em * 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconButton  {
+    width: calc(5em * 0.5);
+    height: calc(5em * 0.5);
+    background-color: #002f53;
+    border-radius: 50%;
+    padding: 4px;
+    margin: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.iconButton img { 
+    width: calc(5em * 0.475);
+    height: calc(5em * 0.475);
+}
+
+
+
+.dropdown  {
+    position: absolute;
+    top: 4.5em;
+    width: 300px;
+    transform: translateX(-35%);
+    background-color: #001220;
+    border: 4px solid #002f53;
+    border-radius: 12px;
+    padding: 1rem;
+    overflow: hidden;
+    z-index: 100;
+}
+
+.UserInfoDropDownItem  {
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border-radius: 12px;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+
+    color: #FFFFFF;
+}
+.UserInfoDropDownItem a   {
+    color: #FFFFFF;
+}
+.UserInfoDropDownItem:hover  {
+    background-color: #002f53;
+}
+
+.UserInfoDropDownItem span  {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.leftIcon  {
+    margin-right: 1rem;
+}
+.rightIcon  {
+    margin-left: auto;
+}
