@@ -40,6 +40,7 @@ function PlaylistPage()  {
                         color='#00a96f'
                         ariaLabel='loading'
                     />
+                    <br></br>
                     <h1>Your playlist is being created ... </h1>
             </>}
             
