@@ -31,7 +31,7 @@ function PlaylistPage()  {
 
     return (
         <>
-        <section className="landing-main">
+        <section className={styles.mainLanding}>
             {/* Loading Screen for playlist preview page */}
             {isLoading && <>
                     <Audio
@@ -46,10 +46,14 @@ function PlaylistPage()  {
             {/* iframe with spotify playlist embedded */}
             {(!isLoading && responseData != null) && 
             <>
-                <div>
-                    <h1 className="playlist-header">Playlist Preview</h1>
+                <div className={styles.previewContainer}>
+                    <div className={styles.previewTitleLinkContainer}>
+                        <h1 className={styles.PageTitle}>Playlist Preview</h1>
+                        <a href={responseData.spotify} className={styles.lintToSpotify}>View in Spotify</a>
+                    </div>
+                    <iframe  src = {`https://open.spotify.com/embed/${responseData.spotify.slice(responseData.spotify.length - 31)}?utm_source=generator`} width="100%" height="380" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">Loading Playlist Content</iframe>
                 </div>
-                <iframe  src = {`https://open.spotify.com/embed/${responseData.spotify.slice(responseData.spotify.length - 31)}?utm_source=generator`} width="100%" height="380" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+                
             </>}
 
         </section>  
