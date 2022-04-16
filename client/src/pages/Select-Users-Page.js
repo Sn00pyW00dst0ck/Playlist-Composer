@@ -23,7 +23,7 @@ function SelectUsersPage() {
     const [playlistDescription, setPlaylistDescription] = useState(null);
     const [playlistSize, setPlaylistSize] = useState(50);
     const [isOpen, toggleOpen] = useState(false);
-    const [generationMethod, setGenerationMethod] = useState("Map");
+    const [generationMethod, setGenerationMethod] = useState("map");
     
     function openOptions () {
         toggleOpen(!isOpen);
@@ -78,7 +78,8 @@ function SelectUsersPage() {
               <h2>Playlist Size: </h2>
               <NumberPicker defaultValue={50} onChange={value => setPlaylistSize(value)}/>  
             </div>
-            <div onChange={toggleGenerationMethod}>
+            <br></br>
+            <div className={styles.playlistGenerateContainer}>
                 <h2>Playlist Generation Method</h2>
                 <FormControl>
                     <RadioGroup
@@ -87,8 +88,8 @@ function SelectUsersPage() {
                         value={generationMethod}
                         onChange={toggleGenerationMethod}
                     >
-                        <FormControlLabel value="Map" control={<Radio style={{color:"white"}} />} label="Hash Map" />
-                        <FormControlLabel value="Tree" control={<Radio style={{color:"white"}} />} label="Red-Black Tree" />
+                        <FormControlLabel value="map" control={<Radio style={{color:"white"}} />} label="Hash Map" />
+                        <FormControlLabel value="tree" control={<Radio style={{color:"white"}} />} label="Red-Black Tree" />
                     </RadioGroup>
                 </FormControl>
             </div>
