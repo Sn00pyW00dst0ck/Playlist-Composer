@@ -30,9 +30,15 @@ a{
 }
 
 
-.footer-header, .select-header, .playlist-header{
+.select-header, .playlist-header{
   font-weight: bold;
   font-size: 5vh;
+}
+
+.footer-header{
+  font-weight: bold;
+  font-size: 10vh;
+  color: white;
 }
 
 /* CSS For Landing Page */
@@ -120,11 +126,6 @@ iframe{
   background-image: url("../public/layered-waves-haikei.svg");
 }
 
-/* Select-Users-Page CSS */
-
-.playlist-btn{
-
-}
 
 .more {
   color: black;
