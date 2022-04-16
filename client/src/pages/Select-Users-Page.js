@@ -16,7 +16,7 @@ function SelectUsersPage() {
     const [user2, setUser2] = useState(null);
     const [user3, setUser3] = useState(null);
     const [user4, setUser4] = useState(null);
-    const [playlistName, setPlaylistName] = useState("API Test Playlist");
+    const [playlistName, setPlaylistName] = useState(null);
     const [playlistDescription, setPlaylistDescription] = useState(null);
     const [playlistSize, setPlaylistSize] = useState(50);
     const [isOpen, toggleOpen] = useState(false);
@@ -46,8 +46,7 @@ function SelectUsersPage() {
             <Searchbar setUser={setUser3} />
             <Searchbar setUser={setUser4} />
             
-            {/* Button that changes the options for the fetch and triggers the useFetch hook to call our backend */}
-            
+            {/* Drop down for Playlist Option fields */}
             {!isOpen && <>
                 <div className={styles.optionsDropdown} onClick={openOptions}>
                     <h1 className="select-header">Playlist Options</h1>
@@ -56,7 +55,7 @@ function SelectUsersPage() {
                 <br></br>
             </>}
 
-            
+            {/* Generates Playlist option fields if dropdown is open */}
             {isOpen && <>
             <div className={styles.optionsDropdown} onClick={openOptions}>
                 <h1 className="select-header">Playlist Options</h1>
@@ -65,13 +64,14 @@ function SelectUsersPage() {
             <br></br>
             <input className={styles.Searchbar} type="text" onChange={e => setPlaylistName(e.target.value)} placeholder="Enter A Playlist Name"/>
             <textarea className={styles.descBox} type="text" maxLength="300" onChange={e => setPlaylistDescription(e.target.value)} placeholder="Enter A Playlist Description" />
+            <br></br>
             <div className={styles.playlistSizeContainer}>
               <h2>Playlist Size: </h2>
               <NumberPicker defaultValue={50} onChange={value => setPlaylistSize(value)}/>  
             </div>
             </>}
             <br></br>
-            <button className={styles.playlistButton}><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Select Users</Link></button>
+            <div className={styles.playlistButtonContainer}><Link to={`/preview-playlist/${user1}/${user2}/${user3}/${user4}/${playlistName}/${playlistDescription}/${playlistSize}`} >Select Users</Link></div>
         
         </section>
         </>

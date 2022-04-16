@@ -13,9 +13,15 @@ function PlaylistPage()  {
         return e !== 'null' && e !== '' && e !== null;
     });
 
-    let playlistOptions = [playlistName, playlistDesc, playlistSize].filter((e) => {
+    let playlistOptions = {
+        playlistName: playlistName,
+        playlistDesc: playlistDesc,
+        playlistSize: playlistSize
+    }
+    
+    /*[playlistName, playlistDesc, playlistSize].filter((e) => {
         return e !== 'null' && e !== '' && e !== null;
-    });
+    });*/
 
     const [options, setOptions] = useState({
         method: "POST",

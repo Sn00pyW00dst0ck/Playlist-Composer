@@ -16,7 +16,7 @@
     border-radius: 1.5em;
 
     height: 3em;
-    width: calc(100% - 1.5em);
+    width: calc(100% - 9.5em);
 
     font-family: sans-serif;
     font-size: 1em;
@@ -37,7 +37,7 @@
     border-radius: 1.5em;
 
     height: 3.75em;
-    width: calc(100% - 1.5em);
+    width: calc(100% - 9.5em);
 
     font-family: sans-serif;
     font-size: 1em;
@@ -67,7 +67,13 @@
     width: auto;   
 }
 
-.playlistButton > *{
-    
+.playlistButtonContainer{
+    background-color: rgb(255, 255, 255);
+
+    height: 3em;
+    width: 10em;
+
+    border: none;
+    border-radius: .5em;
 }
 
