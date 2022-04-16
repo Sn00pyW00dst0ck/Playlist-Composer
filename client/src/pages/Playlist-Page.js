@@ -52,7 +52,7 @@ function PlaylistPage()  {
                         <h1 className={styles.PageTitle}>Playlist Preview</h1>
                         <p>Your playlist took {responseData.timeTaken[0]} seconds and {responseData.timeTaken[1]} nanoseconds to be created.</p>
                         <div className={styles.linkToSpotifyContainer}>
-                            <a href={responseData.spotify} className={styles.linkToSpotify}>View in Spotify</a>
+                            <a href={responseData.createdPlaylistURL.spotify} className={styles.linkToSpotify}>View in Spotify</a>
                         </div>
                     </div>
                     <iframe  src = {`https://open.spotify.com/embed/${responseData.createdPlaylistURL.spotify.slice(responseData.createdPlaylistURL.spotify.length - 31)}?utm_source=generator`} width="100%" height="380" frameBorder="0" allowFullScreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture">Loading Playlist Content</iframe>
