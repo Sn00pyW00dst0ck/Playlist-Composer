@@ -1,8 +1,8 @@
 import Card from './Card'
 import styles from './Footer.module.css';
-import Gabe from "../imgs/Gabe.png";
-import Patrick from "../imgs/Patrick.png"
-import Andy from "../imgs/Andy.png";
+import Gabe from "../../imgs/Gabe.png";
+import Patrick from "../../imgs/Patrick.png"
+import Andy from "../../imgs/Andy.png";
 
 function Footer() {
     let info1 = `Developed the backend API for easy communication with

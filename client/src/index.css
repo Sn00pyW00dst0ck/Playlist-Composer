@@ -118,12 +118,8 @@ iframe{
   padding: 50px;
 }
 
-.layer1 {
-  background-image: url("../public/wave-haikei.svg");
-}
-
 .layer2 {
-  background-image: url("../public/layered-waves-haikei.svg");
+  background-image: url("./imgs/layered-waves-haikei.svg");
 }
 
 
