@@ -102,3 +102,11 @@
     font-size: 14px;
     font-weight: bold;
 }
+
+.playlistGenerateContainer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
