@@ -1,0 +1,13 @@
+.container {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+
+.container > * {
+    flex-basis: 33%;
+    min-width: 150px;
+    margin: none !important;
+}
