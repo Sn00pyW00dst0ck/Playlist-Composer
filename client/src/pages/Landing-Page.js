@@ -5,7 +5,7 @@ import Hero from "../components/Landing Page Components/Landing-Hero";
 import Tree from "../imgs/newTree.png";
 import Hash from "../imgs/hash.png"
 import '../index.css';
-import Footer from '../components/Footer';
+import Footer from '../components/Landing Page Components/Footer';
 
 // Main Content area for landing page
 function LandingPage({auth}) {
