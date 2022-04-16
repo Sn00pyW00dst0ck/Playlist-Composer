@@ -76,7 +76,7 @@ function SelectUsersPage() {
             <br></br>
             <div className={styles.playlistSizeContainer}>
               <h2>Playlist Size: </h2>
-              <NumberPicker defaultValue={50} onChange={value => setPlaylistSize(value)}/>  
+              <NumberPicker defaultValue={50} max={100} min={1} onChange={value => setPlaylistSize(value)}/>  
             </div>
             <br></br>
             <div className={styles.playlistGenerateContainer}>
