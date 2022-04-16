@@ -14,6 +14,9 @@ function Footer() {
     let info3 = `Helped with frontend design and initial server setup. Mainly
     responsible for creating the algorithm/data structure that supports
     the web app's main functionality`;
+    let url1 = 'https://github.com/Sn00pyW00dst0ck';
+    let url2 = 'https://github.com/Patrick-Lapid';
+    let url3 = 'https://github.com/XianJianZhang';
     return (
         <div class={styles.container}>
             <Card 
@@ -21,18 +24,21 @@ function Footer() {
                 role="Backend Developer and Spotify Interaction"
                 image={Gabe}
                 info={info1}
+                url={url1}
             />
             <Card 
                 name="Alan Patrick Lapid" 
                 role="Backend Developer/Frontend Design" 
                 image={Patrick}
                 info={info2}
+                url={url2}
                 />
             <Card 
                 name="Xian Jian Zhang (Andy)" 
                 role="Frontend Design/Algorithms"
                 image={Andy}
                 info={info3}
+                url={url3}
                 />
         </div>
     )

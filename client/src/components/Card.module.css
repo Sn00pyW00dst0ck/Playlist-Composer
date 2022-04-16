@@ -1,6 +1,6 @@
 :root {
-    --primary: #FFCE00;
-    --secondary: #FE4880;
+    --primary: #00a96f;
+    --secondary: #63768d;
     --dark: #212121;
     --light: #F3F3F3;
   }
@@ -19,8 +19,10 @@
   .card {
     margin: 100px auto 0;
     width: 400px;
-    height: 400px;
+    height: 500px;
     perspective: 1000px;
+    display: flex;
+    flex-direction: column;
   }
   
   .card__inner {
@@ -34,6 +36,8 @@
   
   .card__inner.is_flipped {
     transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
   }
   
   
@@ -61,13 +65,19 @@
   }
   
   .card__face__back {
+    display: flex;
+    flex-direction: column;
     background-color: var(--light);
     transform: rotateY(180deg);
   }
   
-  .card__content {
+  .card__content {  
     width: 100%;
     height: 100%;
+    display: flex;
+    align-items: space-between;
+    flex-direction: column;
+    justify-content: space-between;
   }
   
   .card__header {
@@ -122,4 +132,21 @@
     color: var(--dark);
     font-size: 12px;
     line-height: 1.4;
+  }
+
+  button {
+      background-image:linear-gradient(to bottom right, var(--primary), var(--secondary));
+      padding: 10px;
+      border-radius: 15px;
+      border-width: 1px;
+      transition-duration: 0.5s;
+      margin-bottom: 15px;
+  }
+
+  button:hover {
+      background-image: linear-gradient(white, white); 
+      border: green;
+      border-style: solid;
+      border-width: 1px;
+      color: green;
   }
