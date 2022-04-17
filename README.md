@@ -1,5 +1,12 @@
 # Playlist Creator
 
+Video Demo: https://www.youtube.com/watch?v=JD3j5eQjf2o
+
+[![image](https://user-images.githubusercontent.com/53315150/163699018-424fffea-f735-4968-a0c9-bff0b1db0ded.png)](https://www.youtube.com/watch?v=JD3j5eQjf2o)
+
+
+#
+
 **Build Status: `In Development`**
 
 **By Gabriel Aldous, Alan Patrick Lapid, and Xian Jian Zhang**
