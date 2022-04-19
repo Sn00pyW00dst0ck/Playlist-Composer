@@ -25,29 +25,16 @@ To set up the development environment on your computer:
 5. Run `npm i` in both the root and client directories (this ensures dependencies are up to date)
 6. Run `npm start` from the root directory to run the development server
 
-## Immediate Next Development steps
+## Implemented Features
 
-1. Update Playlist fetching to not give bias to logged in user
-    - Handle error cases (example misspelled name)
-    - Make playlist collab and send to the other specified users
-2. Implement React front end component for displaying this information (look into <iframe> for Spotify player)
-3. CSS updates
-4. Change User Select page to options page (with extra stuff)
-5. Plan video ideas
+- Ability to create a playlist based on the music tastes of multiple users
+- Ability to set playlist title, description, track count, and generation method
+- Ability to view time taken to generate playlist
+- Responsive UI for easy use on mobile devices
 
 ## Planned Features
 
-- Ability to create a playlist based on music tastes of multiple users
 - Ability to create a playlist based on a set of genres
 - Ability to create a playlist based on other chosen playlists
 - Ability to create a playlist based on a set of albums
-- Set custom playlist image, share playlist with other users, and set custom playlist description
-
-## Development Issues / Next Steps
-
-1. Finalize the OAuth2 authentication flow and refresh token flow
-2. Create React UI & webpage for playlist preview & editing
-3. Create React UI & webpage for confirmation of playlist creation
-4. Create React UI for landing page
-5. Finalize SpotifyAPI JavaScript object for easy function calls
-6. Create data structure and algorithms for assigning track priorities by frequency and other factors
+- Set custom playlist image and share playlist with other users
